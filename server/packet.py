@@ -3,7 +3,14 @@ import enum
 
 
 class Action(enum.Enum):
-    pass
+    Ok = enum.auto()
+    Deny = enum.auto()
+    Disconnect = enum.auto()
+    Login = enum.auto()
+    Register = enum.auto()
+    Chat = enum.auto()
+    ModelDelta = enum.auto()
+    Target = enum.auto()
 
 
 class Packet:
@@ -21,10 +28,37 @@ class Packet:
     def __bytes__(self) -> bytes:
         return str(self).encode('utf-8')
 
+class OkPacket(Packet):
+    def __init__(self):
+        super().__init__(Action.Ok)
+
+class DenyPacket(Packet):
+    def __init__(self, reason: str):
+        super().__init__(Action.Deny, reason)
+
+class DisconnectPacket(Packet):
+    def __init__(self, actor_id: int):
+        super().__init__(Action.Disconnect, actor_id)
+
+class LoginPacket(Packet):
+    def __init__(self, username: str, password: str):
+        super().__init__(Action.Login, username, password)
+
+class RegisterPacket(Packet):
+    def __init__(self, username: str, password: str, avatar_id: int):
+        super().__init__(Action.Register, username, password, avatar_id)
 
 class ChatPacket(Packet):
-    def __init__(self, message: str):
-        super().__init__(Action.Chat, message)
+    def __init__(self, sender: str, message: str):
+        super().__init__(Action.Chat, sender, message)
+
+class ModelDeltaPacket(Packet):
+    def __init__(self, model_data: dict):
+        super().__init__(Action.ModelDelta, model_data)
+
+class TargetPacket(Packet):
+    def __init__(self, t_x: float, t_y: float):
+        super().__init__(Action.Target, t_x, t_y)
 
 
 def from_json(json_str: str) -> Packet:
@@ -47,7 +81,7 @@ def from_json(json_str: str) -> Packet:
         return constructor(*payloads)
     except KeyError as e:
         print(
-            f"KeyError: {class_name} is not a valid packet name. Stacktrace: {e}")
+            f"{class_name} is not a valid packet name. Stacktrace: {e}")
     except TypeError:
         print(
-            f"TypeError: {class_name} can't handle arguments {tuple(payloads)}.")
+            f"{class_name} can't handle arguments {tuple(payloads)}.")
