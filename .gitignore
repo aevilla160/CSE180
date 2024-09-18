@@ -6,7 +6,15 @@ client/.import/
 client/export.cfg
 client/export_presets.cfg
 client/.godot/
+
+
+server/certs/*
+server/migrations/0001_initial.py
+server/migrations/__pycache__/
+server/db.sqlite3
 godot/
+
+
 
 # Imported translations (automatically generated from CSV files)
 client/*.translation
