@@ -1,4 +1,4 @@
-sudo apt-get install python openssl pip conda sqlite3 -y
+sudo dnf install python openssl pip conda sqlite -y
 
 conda env create -f server/environment.yml
 conda activate game-server
