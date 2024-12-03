@@ -53,8 +53,8 @@ if __name__ == '__main__':
     logger.addHandler(stdout_handler)
 
     certs_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "certs")
-    private_key_data = open(os.path.join(certs_dir, "server.key"), "rb").read()
-    certificate_data = open(os.path.join(certs_dir, "server.crt"), "rb").read()
+    private_key_data = open(os.path.join(certs_dir, "ca-key.pem"), "rb").read()
+    certificate_data = open(os.path.join(certs_dir, "ca-cert.pem"), "rb").read()
 
     private_key = crypto.load_privatekey(crypto.FILETYPE_PEM, private_key_data)
     certificate = crypto.load_certificate(crypto.FILETYPE_PEM, certificate_data)
@@ -62,10 +62,11 @@ if __name__ == '__main__':
     cert_options = CertificateOptions(
         privateKey=private_key,
         certificate=certificate,
+        verify=False,
     )
 
     PORT: int = 8081
-    factory = GameFactory('0.0.0.0', PORT)
+    factory = GameFactory('127.0.0.1', PORT)
 
     logger.info(f"Server listening on port {PORT}")
     reactor.listenSSL(PORT, factory, cert_options)

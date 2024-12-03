@@ -81,5 +81,3 @@ func _process(delta):
 		animation_player.play("walk_up")
 	else:
 		animation_player.play("walk_left")
-
-

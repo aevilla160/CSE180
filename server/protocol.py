@@ -176,5 +176,3 @@ class GameServerProtocol(WebSocketServerProtocol):
             self.sendMessage(b)
         except Disconnected:
             print(f"Couldn't send {p} because client disconnected.")
-
-

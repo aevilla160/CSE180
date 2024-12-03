@@ -1,0 +1,10 @@
+name: game-server
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - Twisted
+  - Django
+  - pyopenssl
+  - autobahn
+  - service-identity
