@@ -15,7 +15,7 @@ var _player_target: Vector2
 
 var rubber_band_radius: float = 200
 
-var speed: float = 70.0
+var speed: float = 100.0
 
 func _ready():
 	update(initial_data)
