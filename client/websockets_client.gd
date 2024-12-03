@@ -10,10 +10,10 @@ signal error
 var socket = WebSocketPeer.new()
 var last_state = WebSocketPeer.STATE_CLOSED
 var tls_cert := X509Certificate.new()
-var tls_key := CryptoKey.new()
+#var tls_key := CryptoKey.new()
 
 func _ready():
-	var hostname = "127.0.0.1"
+	var hostname = "149.28.223.185"
 	var port = 8081
 	var websocket_url = "wss://%s:%d" % [hostname, port]
 	
@@ -21,8 +21,8 @@ func _ready():
 	
 	print("Attempting connection to: ", websocket_url)
 	
-	var tls_options = TLSOptions.client(tls_cert)
-	#var tls_options = TLSOptions.client_unsafe()
+	#var tls_options = TLSOptions.client(tls_cert)
+	var tls_options = TLSOptions.client_unsafe(tls_cert)
 	
 	var err = socket.connect_to_url(websocket_url, tls_options)
 

@@ -11,6 +11,7 @@ extends Control
 @onready var avatar_left: Button = get_node("CanvasLayer/Panel/VBoxContainer/HBoxContainer/Button_Left")
 @onready var avatar_ok: Button = get_node("CanvasLayer/Panel/VBoxContainer/HBoxContainer/Button_Ok")
 @onready var avatar_right: Button = get_node("CanvasLayer/Panel/VBoxContainer/HBoxContainer/Button_Right")
+@onready var menu_button_sound = $MenuSound
 
 var avatar_id = 0
 
@@ -29,19 +30,23 @@ func _ready():
 	avatar_right.connect("pressed", Callable(self, "_prev_avatar"))
 
 func _login():
+	menu_button_sound.play()
 	emit_signal("login", username_field.text, password_field.text)
 
 func _choose_avatar():
+	menu_button_sound.play()
 	avatar_panel.visible = true
 	avatar_animation_player.play("walk_down")
 
 func _next_avatar():
+	menu_button_sound.play()
 	avatar_id += 1
 	if avatar_id >= 6:
 		avatar_id = 0
 	_update_sprite()
 
 func _prev_avatar():
+	menu_button_sound.play()
 	avatar_id -= 1
 	if avatar_id < 0:
 		avatar_id = 5
@@ -51,4 +56,5 @@ func _update_sprite():
 	avatar_sprite.set_region_rect(Rect2(368, avatar_id * 48, 64, 48))
 
 func _register():
+	menu_button_sound.play()
 	emit_signal("register", username_field.text, password_field.text, avatar_id)

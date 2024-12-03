@@ -66,7 +66,7 @@ if __name__ == '__main__':
     )
 
     PORT: int = 8081
-    factory = GameFactory('127.0.0.1', PORT)
+    factory = GameFactory('0.0.0.0', PORT)
 
     logger.info(f"Server listening on port {PORT}")
     reactor.listenSSL(PORT, factory, cert_options)

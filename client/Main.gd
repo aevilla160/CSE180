@@ -55,7 +55,7 @@ func PLAY(p):
 			remove_child(actor)
 			_actors.erase(actor_id)
 			
-	
+
 func _handle_login_button(username: String, password: String):
 	state = Callable(self, "LOGIN")
 	var p: Packet = Packet.new("Login", [username, password])
