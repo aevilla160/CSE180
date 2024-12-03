@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cug7knj6wbtt5"]
+[gd_scene load_steps=11 format=3 uid="uid://cug7knj6wbtt5"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://f7vof0nt350g" path="res://Login.tscn" id="2"]
@@ -19,12 +19,15 @@ texture = ExtResource("3")
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w6255"]
 texture = ExtResource("3")
 
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_j26u3"]
+
 [sub_resource type="TileSet" id="1"]
 sources/0 = SubResource("TileSetAtlasSource_h30we")
 sources/1 = SubResource("TileSetAtlasSource_c5rpe")
 sources/2 = SubResource("TileSetAtlasSource_vk0rq")
 sources/3 = SubResource("TileSetAtlasSource_yfrwq")
 sources/4 = SubResource("TileSetAtlasSource_w6255")
+sources/5 = SubResource("TileSetScenesCollectionSource_j26u3")
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1")

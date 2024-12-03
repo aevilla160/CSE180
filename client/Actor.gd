@@ -17,6 +17,8 @@ var rubber_band_radius: float = 200
 
 var speed: float = 70.0
 
+@export var inventory: Inventory
+
 func _ready():
 	update(initial_data)
 

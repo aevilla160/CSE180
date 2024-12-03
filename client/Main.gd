@@ -4,7 +4,7 @@ extends Node
 const NetworkClient = preload("res://websockets_client.gd")
 const Packet = preload("res://packet.gd")
 const Chatbox = preload("res://Chatbox.tscn")
-const ui = preload("res://UI.tscn")
+const ui = preload("res://ui/UI.tscn")
 const Actor = preload("res://Actor.tscn")
 
 @onready var _network_client = NetworkClient.new()
