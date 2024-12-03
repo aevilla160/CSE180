@@ -22,11 +22,11 @@ func _ready():
 
 func update(new_model: Dictionary):
 	super.update(new_model)
-	
+
 	# Set the correct sprite for the actor's avatar ID
 	if new_model.has("avatar_id"):
 		sprite.set_region_rect(Rect2(368, new_model["avatar_id"] * 48, 64, 48))
-	
+
 	if new_model.has("instanced_entity"):
 		var ientity = new_model["instanced_entity"]
 		
@@ -41,13 +41,11 @@ func update(new_model: Dictionary):
 			elif (body.position - server_position).length() > rubber_band_radius:
 				# Rubber band if body position too far away from server position
 				body.position = server_position
-				
-			
+
 		if ientity.has("entity"):
 			var entity = ientity["entity"]
 			if entity.has("name"):
 				actor_name = ientity["entity"]["name"]
-		
 				if label:
 					label.text = actor_name
 
