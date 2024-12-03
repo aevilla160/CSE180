@@ -4,16 +4,18 @@ extends Node
 const NetworkClient = preload("res://websockets_client.gd")
 const Packet = preload("res://packet.gd")
 const Chatbox = preload("res://Chatbox.tscn")
+const ui = preload("res://UI.tscn")
 const Actor = preload("res://Actor.tscn")
 
 @onready var _network_client = NetworkClient.new()
 @onready var _login_screen = get_node("Login")
+
 var _chatbox = null
 var state: Callable
 var _username: String
 var _actors: Dictionary = {}
 var _player_actor = null
-
+var _ui = null
 
 func _ready():
 	add_child(_network_client)
@@ -21,6 +23,7 @@ func _ready():
 	_login_screen.login.connect(_handle_login_button)
 	_login_screen.register.connect(_handle_register_button)
 	# state = null
+
 
 func LOGIN(p):
 	match p.action:
@@ -30,6 +33,7 @@ func LOGIN(p):
 			var reason: String = p.payloads[0]
 			OS.alert(reason)
 
+
 func REGISTER(p):
 	match p.action:
 		"Ok":
@@ -37,6 +41,7 @@ func REGISTER(p):
 		"Deny":
 			var reason: String = p.payloads[0]
 			OS.alert(reason)
+
 
 func PLAY(p):
 	match p.action:
@@ -47,14 +52,13 @@ func PLAY(p):
 			var username: String = p.payloads[0]
 			var message: String = p.payloads[1]
 			_chatbox.add_message(username, message)
-			
 		"Disconnect":
 			var actor_id: int = p.payloads[0]
 			var actor = _actors[actor_id]
 			_chatbox.add_message(null, actor.actor_name + " has disconnected.")
 			remove_child(actor)
 			_actors.erase(actor_id)
-			
+
 
 func _handle_login_button(username: String, password: String):
 	state = Callable(self, "LOGIN")
@@ -62,11 +66,12 @@ func _handle_login_button(username: String, password: String):
 	_network_client.send_packet(p)
 	_username = username
 
+
 func _handle_register_button(username: String, password: String, avatar_id: int):
 	state = Callable(self, "REGISTER")
 	var p: Packet = Packet.new("Register", [username, password, avatar_id])
 	_network_client.send_packet(p)
-	
+
 
 func _update_models(model_data: Dictionary):
 	"""
@@ -80,24 +85,23 @@ func _update_models(model_data: Dictionary):
 	var f: Callable = Callable(self, func_name)
 	f.call(model_id, model_data)
 
+
 func _update_actor(model_id: int, model_data: Dictionary):
 	# If this is an existing actor, just update them
 	if model_id in _actors:
 		_actors[model_id].update(model_data)
-
 	# If this actor doesn't exist in the game yet, create them
 	else:
 		var new_actor
-		
 		if not _player_actor: 
 			_player_actor = Actor.instantiate().init(model_data)
 			_player_actor.is_player = true
 			new_actor = _player_actor
 		else:
 			new_actor = Actor.instantiate().init(model_data)
-		
 		_actors[model_id] = new_actor
 		add_child(new_actor)
+
 
 func _enter_game():
 	state = Callable(self, "PLAY")
@@ -109,11 +113,15 @@ func _enter_game():
 	_chatbox = Chatbox.instantiate()
 	_chatbox.connect("message_sent", Callable(self, "send_chat"))
 	add_child(_chatbox)
-	
+	_ui = ui.instantiate()
+	add_child(_ui)
+
+
 func send_chat(text: String):
 	var p: Packet = Packet.new("Chat", [_username, text])
 	_network_client.send_packet(p)
 	_chatbox.add_message(_username, text)
+
 
 func _handle_client_connected():
 	print("Client connected to server!")
@@ -134,8 +142,8 @@ func _handle_network_data(data: String):
 
 func _handle_network_error():
 	OS.alert("There was an error")
-	
-	
+
+
 func _unhandled_input(event: InputEvent):
 	if _player_actor and event.is_action_released("click"):
 		var target = _player_actor.body.get_global_mouse_position()

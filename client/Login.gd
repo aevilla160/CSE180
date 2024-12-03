@@ -29,14 +29,17 @@ func _ready():
 	avatar_ok.connect("pressed", Callable(self, "_register"))
 	avatar_right.connect("pressed", Callable(self, "_prev_avatar"))
 
+
 func _login():
 	menu_button_sound.play()
 	emit_signal("login", username_field.text, password_field.text)
+
 
 func _choose_avatar():
 	menu_button_sound.play()
 	avatar_panel.visible = true
 	avatar_animation_player.play("walk_down")
+
 
 func _next_avatar():
 	menu_button_sound.play()
@@ -45,6 +48,7 @@ func _next_avatar():
 		avatar_id = 0
 	_update_sprite()
 
+
 func _prev_avatar():
 	menu_button_sound.play()
 	avatar_id -= 1
@@ -52,8 +56,10 @@ func _prev_avatar():
 		avatar_id = 5
 	_update_sprite()
 
+
 func _update_sprite():
 	avatar_sprite.set_region_rect(Rect2(368, avatar_id * 48, 64, 48))
+
 
 func _register():
 	menu_button_sound.play()
