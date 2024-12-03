@@ -9,3 +9,8 @@ sudo chmod +x generate-certs.sh
 
 cp -r certs server/
 cp certs/ca-cert.pem client/certs/ca-cert.pem
+
+cd server
+python manage.py makemigrations
+python manage.py migrate
+
