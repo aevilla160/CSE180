@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b6ckmg0lpwxxw" path="res://Avatar.tscn" id="1"]
 [ext_resource type="Script" path="res://Actor.gd" id="2"]
 [ext_resource type="Resource" uid="uid://dpn1x1uv3w70o" path="res://inventory/player_inventory.tres" id="2_3ikuh"]
-[ext_resource type="PackedScene" uid="uid://bhtrb7h40fg2t" path="res://inventory/Inventory.tscn" id="4_wpnxs"]
+[ext_resource type="PackedScene" uid="uid://b3kk8hjhck3ix" path="res://camera.tscn" id="3_ylp40"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x865r"]
 radius = 17.0
@@ -16,11 +16,7 @@ inventory = ExtResource("2_3ikuh")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 
-[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
-position_smoothing_enabled = true
-
-[node name="InventoryUI" parent="CharacterBody2D/Camera2D" instance=ExtResource("4_wpnxs")]
-z_index = 10
+[node name="Camera2D" parent="CharacterBody2D" instance=ExtResource("3_ylp40")]
 
 [node name="Label" type="Label" parent="CharacterBody2D"]
 offset_left = -53.0
