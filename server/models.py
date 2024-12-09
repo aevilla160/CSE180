@@ -107,6 +107,8 @@ class Item(models.Model):
 class FriendlyNPC(models.Model):
     npc_role = models.CharField(max_length=100)
     npc_name = models.CharField(max_length=100)
+    npc_x_location = models.IntegerField(default=0)
+    npc_y_location = models.IntegerField(default=0)
     instanced_entity = models.OneToOneField(InstancedEntity, on_delete=models.CASCADE)
 
     class Meta:
@@ -114,6 +116,8 @@ class FriendlyNPC(models.Model):
 
 class EnemyNPC(models.Model):
     enemy_name = models.CharField(max_length=100)
+    enemy_x_location = models.IntegerField(default=0)
+    enemy_y_location = models.IntegerField(default=0)
     enemy_item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
     instanced_entity = models.OneToOneField(InstancedEntity, on_delete=models.CASCADE)
 

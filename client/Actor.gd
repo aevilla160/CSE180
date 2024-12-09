@@ -22,6 +22,7 @@ var speed: float = 70.0
 func _ready():
 	update(initial_data)
 
+
 func update(new_model: Dictionary):
 	super.update(new_model)
 
@@ -51,6 +52,7 @@ func update(new_model: Dictionary):
 				if label:
 					label.text = actor_name
 
+
 func _physics_process(delta):	
 	var target: Vector2
 	if is_player:
@@ -65,6 +67,7 @@ func _physics_process(delta):
 		velocity = body.velocity
 	else:
 		velocity = Vector2.ZERO
+
 
 func _process(delta):
 	# Get the direction angle
@@ -81,3 +84,7 @@ func _process(delta):
 		animation_player.play("walk_up")
 	else:
 		animation_player.play("walk_left")
+
+
+func collect(item):
+	inventory.insert(item)

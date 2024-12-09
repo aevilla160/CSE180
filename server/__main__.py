@@ -19,7 +19,7 @@ class GameFactory(WebSocketServerFactory):
         super().__init__(f"wss://{hostname}:{port}")
 
         self.players: set[protocol.GameServerProtocol] = set()
-        self.tickrate: int = 20
+        self.tickrate: int = 30
         self.user_ids_logged_in: set[int] = set()
 
         tickloop = task.LoopingCall(self.tick)

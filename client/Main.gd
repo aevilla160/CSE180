@@ -58,6 +58,48 @@ func PLAY(p):
 			_chatbox.add_message(null, actor.actor_name + " has disconnected.")
 			remove_child(actor)
 			_actors.erase(actor_id)
+		"Attack":
+			var actor_id: int = p.payloads[0]
+			var actor = _actors[actor_id]
+			var target_actor_id: int = p.payloads[1]
+			var target_actor = _actors[actor_id]
+			var damage: int = p.payloads[2]
+		"Heal":
+			var actor_id: int = p.payloads[0]
+			var actor = _actors[actor_id]
+			var target_actor_id: int = p.payloads[1]
+			var target_actor = _actors[actor_id]
+			var healing: int = p.payloads[2]
+		"Die":
+			var actor_id: int = p.payloads[0]
+			var actor = _actors[actor_id]
+			_chatbox.add_message(null, actor.actor_name + " has died.")
+		"CreateGuild":
+			var actor_id: int = p.payloads[0]
+			var actor = _actors[actor_id]
+		"JoinGuild":
+			var actor_id: int = p.payloads[0]
+			var actor = _actors[actor_id]
+		"LeaveGuild":
+			var actor_id: int = p.payloads[0]
+			var actor = _actors[actor_id]
+		"GetQuest":
+			var actor_id: int = p.payloads[0]
+			var actor = _actors[actor_id]
+		"CompleteQuest":
+			var actor_id: int = p.payloads[0]
+			var actor = _actors[actor_id]
+		"GetItem":
+			var actor_id: int = p.payloads[0]
+			var actor = _actors[actor_id]
+		"LoseItem":
+			var actor_id: int = p.payloads[0]
+			var actor = _actors[actor_id]
+		"TalkFriendlyNPC":
+			var actor_id: int = p.payloads[0]
+			var actor = _actors[actor_id]
+			var target_actor_id: int = p.payloads[1]
+			var target_actor = _actors[actor_id]
 
 
 func _handle_login_button(username: String, password: String):
