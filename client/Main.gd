@@ -89,24 +89,24 @@ func PLAY(p):
 			var actor_id: int = p.payloads[0]
 			var actor = _actors[actor_id]
 			var quest_id: int = p.payloads[1]
-			var quest = _quests[quest_id]
+			var quest = _quests[quest_id]["active"]
 		"CompleteQuest":
 			var actor_id: int = p.payloads[0]
 			var actor = _actors[actor_id]
 			var quest_id: int = p.payloads[1]
-			var quest = _quests[quest_id]
+			var quest = _quests[quest_id]["complete"]
 		"GetItem":
 			var actor_id: int = p.payloads[0]
 			var actor = _actors[actor_id]
 			var item_id: int = p.payloads[1]
-			var item = _items[item_id]
 			var quantity: int = p.payloads[2]
+			var item = _items[item_id][+quantity]
 		"LoseItem":
 			var actor_id: int = p.payloads[0]
 			var actor = _actors[actor_id]
 			var item_id: int = p.payloads[1]
-			var item = _items[item_id]
 			var quantity: int = p.payloads[2]
+			var item = _items[item_id][-quantity]
 		"TalkFriendlyNPC":
 			var actor_id: int = p.payloads[0]
 			var actor = _actors[actor_id]

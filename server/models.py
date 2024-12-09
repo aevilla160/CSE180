@@ -89,9 +89,8 @@ class Character(models.Model):
         db_table = 'character'
 
 class Quest(models.Model):
-    quest_name = models.CharField(max_length=100)
-    difficulty = models.CharField(max_length=50)
-    reward = models.CharField(max_length=100)
+    quest_id = models.IntegerField(default=0)
+    quest_status = models.CharField(max_length=16)
 
     class Meta:
         db_table = 'quests'
