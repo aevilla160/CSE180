@@ -14,6 +14,8 @@ var _chatbox = null
 var state: Callable
 var _username: String
 var _actors: Dictionary = {}
+var _items: Dictionary = {}
+var _quests: Dictionary = {}
 var _player_actor = null
 var _ui = null
 
@@ -86,15 +88,25 @@ func PLAY(p):
 		"GetQuest":
 			var actor_id: int = p.payloads[0]
 			var actor = _actors[actor_id]
+			var quest_id: int = p.payloads[1]
+			var quest = _quests[quest_id]
 		"CompleteQuest":
 			var actor_id: int = p.payloads[0]
 			var actor = _actors[actor_id]
+			var quest_id: int = p.payloads[1]
+			var quest = _quests[quest_id]
 		"GetItem":
 			var actor_id: int = p.payloads[0]
 			var actor = _actors[actor_id]
+			var item_id: int = p.payloads[1]
+			var item = _items[item_id]
+			var quantity: int = p.payloads[2]
 		"LoseItem":
 			var actor_id: int = p.payloads[0]
 			var actor = _actors[actor_id]
+			var item_id: int = p.payloads[1]
+			var item = _items[item_id]
+			var quantity: int = p.payloads[2]
 		"TalkFriendlyNPC":
 			var actor_id: int = p.payloads[0]
 			var actor = _actors[actor_id]
