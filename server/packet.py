@@ -73,12 +73,12 @@ class TargetPacket(Packet):
         super().__init__(Action.Target, t_x, t_y)
 
 class AttackPacket(Packet):
-    def __init__(self, actor_id: int, target_actor_id: int):
-        super().__init__(Action.Attack, actor_id, target_actor_id)
+    def __init__(self, actor_id: int, target_actor_id: int, damage: int):
+        super().__init__(Action.Attack, actor_id, target_actor_id, damage)
 
 class HealPacket(Packet):
-    def __init__(self, actor_id: int, target_actor_id: int):
-        super().__init__(Action.Attack, actor_id, target_actor_id)
+    def __init__(self, actor_id: int, target_actor_id: int, healing: int):
+        super().__init__(Action.Attack, actor_id, target_actor_id, healing)
 
 class DiePacket(Packet):
     def __init__(self, actor_id: int):

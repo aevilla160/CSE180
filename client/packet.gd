@@ -23,7 +23,6 @@ static func json_to_action_payloads(json_str: String) -> Array:
 	var test_json_conv = JSON.new()
 	test_json_conv.parse(json_str)
 	var obj_dict: Dictionary = test_json_conv.get_data()
-
 	for key in obj_dict.keys():
 		var value = obj_dict[key]
 		if key == "a":
