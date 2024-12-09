@@ -90,7 +90,7 @@ class Character(models.Model):
 
 class Quest(models.Model):
     quest_id = models.IntegerField(default=0)
-    quest_status = models.CharField(max_length=16)
+    quest_status = models.CharField(max_length=16, default="available")
 
     class Meta:
         db_table = 'quests'
