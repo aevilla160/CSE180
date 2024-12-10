@@ -3,6 +3,10 @@
 [ext_resource type="PackedScene" uid="uid://b6mtufhmvgyqo" path="res://Actor.tscn" id="1_base"]
 [ext_resource type="Script" path="res://EnemyNPC.gd" id="2_script"]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x865r"]
+radius = 17.0
+height = 58.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.2, 0.2, 0.2, 0.8)
 corner_radius_top_left = 4
@@ -23,10 +27,6 @@ radius = 200.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_attack"]
 radius = 50.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x865r"]
-radius = 17.0
-height = 58.0
-
 [node name="EnemyNPC" instance=ExtResource("1_base")]
 z_index = 5
 script = ExtResource("2_script")
@@ -35,15 +35,15 @@ script = ExtResource("2_script")
 collision_layer = 4
 collision_mask = 7
 
-[node name="Avatar" parent="CharacterBody2D" index="0"]
-position = Vector2(-1, -1)
-texture = null
+[node name="CollisionShape2D" parent="CharacterBody2D" index="0"]
+position = Vector2(-1, 3)
+shape = SubResource("CapsuleShape2D_x865r")
 
 [node name="HealthBar" type="ProgressBar" parent="CharacterBody2D" index="1"]
 offset_left = -30.0
-offset_top = -24.0
+offset_top = 34.0
 offset_right = 30.0
-offset_bottom = -16.0
+offset_bottom = 42.0
 theme_override_styles/background = SubResource("StyleBoxFlat_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_fill")
 value = 100.0
@@ -63,15 +63,14 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/AttackArea" index="0"]
 shape = SubResource("CircleShape2D_attack")
 
-[node name="CollisionShape2D" parent="CharacterBody2D" index="4"]
-position = Vector2(-1, 3)
-shape = SubResource("CapsuleShape2D_x865r")
-
-[node name="Label" parent="CharacterBody2D" index="5"]
+[node name="Label" parent="CharacterBody2D" index="4"]
 offset_left = -53.0
 offset_top = -50.0
 offset_right = 53.0
 vertical_alignment = 0
+
+[node name="Avatar" parent="CharacterBody2D" index="5"]
+position = Vector2(-1, -1)
 
 [connection signal="body_entered" from="CharacterBody2D/DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="CharacterBody2D/DetectionArea" to="." method="_on_detection_area_body_exited"]
