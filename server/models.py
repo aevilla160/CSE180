@@ -13,12 +13,15 @@ def create_dict(model: models.Model) -> dict:
     model_type: type = type(model)
     d["model_type"] = model_type.__name__
 
+    if model_type == Guild:
+        if d.get('created_at'):
+            d['created_at'] = d['created_at'].isoformat()
+
     if model_type == InstancedEntity:
         d["entity"] = create_dict(model.entity)
 
     elif model_type == Actor:
         d["instanced_entity"] = create_dict(model.instanced_entity)
-        # Purposefully don't include user information here.
 
     elif model_type == Character:
         d["user"] = create_dict(model.user) if model.user else None
