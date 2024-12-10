@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://b6mtufhmvgyqo"]
+[gd_scene load_steps=4 format=3 uid="uid://b6mtufhmvgyqo"]
 
 [ext_resource type="Script" path="res://Actor.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://btch3w3yq11gy" path="res://tilemap_packed.png" id="2_ulp6q"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_collision"]
 radius = 16.0
@@ -11,6 +12,8 @@ script = ExtResource("1_script")
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 
 [node name="Avatar" type="Sprite2D" parent="CharacterBody2D"]
+scale = Vector2(4, 4)
+texture = ExtResource("2_ulp6q")
 region_enabled = true
 region_rect = Rect2(368, 0, 64, 48)
 
