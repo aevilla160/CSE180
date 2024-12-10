@@ -19,7 +19,22 @@ def create_dict(model: models.Model) -> dict:
     elif model_type == Actor:
         d["instanced_entity"] = create_dict(model.instanced_entity)
         # Purposefully don't include user information here.
-    
+
+    elif model_type == Character:
+        d["user"] = create_dict(model.user) if model.user else None
+        d["guild"] = create_dict(model.guild) if model.guild else None
+        d["instanced_entity"] = create_dict(model.instanced_entity)
+
+    elif model_type == Guild:
+        d["leader"] = create_dict(model.leader) if model.leader else None
+
+    elif model_type == FriendlyNPC:
+        d["instanced_entity"] = create_dict(model.instanced_entity)
+
+    elif model_type == EnemyNPC:
+        d["instanced_entity"] = create_dict(model.instanced_entity)
+        d["enemy_item"] = create_dict(model.enemy_item) if model.enemy_item else None
+
     return d
 
 def get_delta_dict(model_dict_before: dict, model_dict_after: dict) -> dict:
@@ -77,8 +92,14 @@ class Guild(models.Model):
         db_table = 'guild'
 
 class Character(models.Model):
-    level = models.IntegerField()
-    character_class = models.CharField(max_length=50)
+    level = models.IntegerField(default=1)
+    xp = models.IntegerField(default=0)
+    hp = models.IntegerField(default=100)
+    mp = models.IntegerField(default=5)
+    vitality = models.IntegerField(default=10)
+    strength = models.IntegerField(default=1)
+    magic = models.IntegerField(default=1)
+    character_class = models.CharField(max_length=16)
     user = models.ForeignKey(GameUser, on_delete=models.CASCADE, null=True)
     guild = models.ForeignKey(Guild, on_delete=models.SET_NULL, null=True)
     character_name = models.CharField(max_length=100)
@@ -117,6 +138,7 @@ class EnemyNPC(models.Model):
     enemy_name = models.CharField(max_length=100)
     enemy_x_location = models.IntegerField(default=0)
     enemy_y_location = models.IntegerField(default=0)
+    enemy_health = models.IntegerField(default=10)
     enemy_item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
     instanced_entity = models.OneToOneField(InstancedEntity, on_delete=models.CASCADE)
 

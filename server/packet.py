@@ -116,6 +116,7 @@ class TalkFriendlyNPCPacket(Packet):
     def __init__(self, actor_id: int, target_actor_id: int):
         super().__init__(Action.TalkFriendlyNPC, actor_id, target_actor_id)
 
+
 def from_json(json_str: str) -> Packet:
     obj_dict = json.loads(json_str)
 

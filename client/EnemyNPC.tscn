@@ -1,0 +1,71 @@
+[gd_scene load_steps=7 format=3 uid="uid://cgf2vv7pooi54"]
+
+[ext_resource type="PackedScene" uid="uid://b6mtufhmvgyqo" path="res://Actor.tscn" id="1_base"]
+[ext_resource type="Script" path="res://EnemyNPC.gd" id="2_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.2, 0.2, 0.2, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fill"]
+bg_color = Color(0.85, 0.2, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_detect"]
+radius = 200.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_attack"]
+radius = 50.0
+
+[node name="EnemyNPC" instance=ExtResource("1_base")]
+script = ExtResource("2_script")
+
+[node name="CharacterBody2D" parent="." index="0"]
+collision_layer = 4
+collision_mask = 7
+
+[node name="Camera2D" parent="CharacterBody2D" index="0"]
+visible = false
+
+[node name="Label" parent="CharacterBody2D" index="1"]
+offset_top = -50.0
+offset_bottom = -24.0
+
+[node name="HealthBar" type="ProgressBar" parent="CharacterBody2D" index="2"]
+offset_left = -30.0
+offset_top = -24.0
+offset_right = 30.0
+offset_bottom = -16.0
+theme_override_styles/background = SubResource("StyleBoxFlat_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fill")
+value = 100.0
+show_percentage = false
+
+[node name="DetectionArea" type="Area2D" parent="CharacterBody2D" index="3"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/DetectionArea" index="0"]
+shape = SubResource("CircleShape2D_detect")
+
+[node name="AttackArea" type="Area2D" parent="CharacterBody2D" index="4"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/AttackArea" index="0"]
+shape = SubResource("CircleShape2D_attack")
+
+[node name="Avatar" parent="CharacterBody2D" index="5"]
+position = Vector2(-1, -1)
+texture = null
+
+[connection signal="body_entered" from="CharacterBody2D/DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="CharacterBody2D/DetectionArea" to="." method="_on_detection_area_body_exited"]
+[connection signal="body_entered" from="CharacterBody2D/AttackArea" to="." method="_on_attack_area_body_entered"]
+[connection signal="body_exited" from="CharacterBody2D/AttackArea" to="." method="_on_attack_area_body_exited"]

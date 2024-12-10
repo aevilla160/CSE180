@@ -1,83 +1,101 @@
-[gd_scene load_steps=3 format=3 uid="uid://d3relvl1tgwvu"]
+[gd_scene load_steps=6 format=3 uid="uid://d3relvl1tgwvu"]
 
-[ext_resource type="Script" path="res://ui/ui.gd" id="1_p34q3"]
-[ext_resource type="Theme" uid="uid://icq10b8hxc47" path="res://ui/ui_theme.tres" id="2_f1g5y"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.1, 0.1, 0.1, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp"]
+bg_color = Color(0.8, 0.2, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mp"]
+bg_color = Color(0.2, 0.2, 0.8, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xp"]
+bg_color = Color(0.8, 0.8, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.2, 0.2, 0.2, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0.5)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [node name="UI" type="Control"]
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_p34q3")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Panel" type="Panel" parent="CanvasLayer"]
-offset_right = 600.0
-offset_bottom = 200.0
-theme = ExtResource("2_f1g5y")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel/VBoxContainer"]
-layout_mode = 2
-alignment = 1
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Name" type="Label" parent="CanvasLayer/Panel/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-theme = ExtResource("2_f1g5y")
-theme_override_font_sizes/font_size = 36
-text = "Name"
-vertical_alignment = 1
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 300.0
+offset_bottom = 200.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
-[node name="Dash" type="Label" parent="CanvasLayer/Panel/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-theme = ExtResource("2_f1g5y")
-theme_override_font_sizes/font_size = 36
-text = " - "
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Class" type="Label" parent="CanvasLayer/Panel/VBoxContainer/HBoxContainer"]
+[node name="Info" type="Label" parent="CanvasLayer/Panel/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 36
-text = "Class
-"
-horizontal_alignment = 1
-vertical_alignment = 1
+theme_override_font_sizes/font_size = 16
+text = "Character Info"
 
-[node name="Dash2" type="Label" parent="CanvasLayer/Panel/VBoxContainer/HBoxContainer"]
+[node name="GuildInfo" type="Label" parent="CanvasLayer/Panel/VBoxContainer"]
 layout_mode = 2
-theme = ExtResource("2_f1g5y")
-theme_override_font_sizes/font_size = 36
-text = " - "
-horizontal_alignment = 1
-vertical_alignment = 1
+theme_override_font_sizes/font_size = 14
+text = "[Guild Name]"
 
-[node name="Level" type="Label" parent="CanvasLayer/Panel/VBoxContainer/HBoxContainer"]
+[node name="HealthBar" type="ProgressBar" parent="CanvasLayer/Panel/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 36
-text = "Lv. 99"
-vertical_alignment = 1
+theme_override_styles/fill = SubResource("StyleBoxFlat_hp")
+value = 100.0
+show_percentage = false
 
-[node name="HealthBar" type="TextureProgressBar" parent="CanvasLayer/Panel/VBoxContainer"]
+[node name="ManaBar" type="ProgressBar" parent="CanvasLayer/Panel/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
-rounded = true
+theme_override_styles/fill = SubResource("StyleBoxFlat_mp")
+value = 100.0
+show_percentage = false
 
-[node name="ManaBar" type="TextureProgressBar" parent="CanvasLayer/Panel/VBoxContainer"]
+[node name="XPBar" type="ProgressBar" parent="CanvasLayer/Panel/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
+theme_override_styles/fill = SubResource("StyleBoxFlat_xp")
+value = 50.0
+show_percentage = false
 
 [node name="ActionBar" type="Panel" parent="CanvasLayer"]
 anchors_preset = 7
@@ -85,83 +103,238 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -400.0
-offset_top = -230.0
-offset_right = 400.0
-offset_bottom = -70.0
+offset_left = -200.0
+offset_top = -130.0
+offset_right = 200.0
+offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
 [node name="GridContainer" type="GridContainer" parent="CanvasLayer/ActionBar"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -30.0
+offset_right = 190.0
+offset_bottom = 30.0
 grow_horizontal = 2
 grow_vertical = 2
 columns = 5
 
-[node name="Panel" type="Panel" parent="CanvasLayer/ActionBar/GridContainer"]
+[node name="Ability1" type="Panel" parent="CanvasLayer/ActionBar/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/ActionBar/GridContainer/Panel"]
+[node name="Ability1Button" type="Button" parent="CanvasLayer/ActionBar/GridContainer/Ability1"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+text = "Attack"
 
-[node name="Panel2" type="Panel" parent="CanvasLayer/ActionBar/GridContainer"]
+[node name="Ability2" type="Panel" parent="CanvasLayer/ActionBar/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/ActionBar/GridContainer/Panel2"]
+[node name="Ability2Button" type="Button" parent="CanvasLayer/ActionBar/GridContainer/Ability2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+text = "Heal"
 
-[node name="Panel3" type="Panel" parent="CanvasLayer/ActionBar/GridContainer"]
+[node name="Ability3" type="Panel" parent="CanvasLayer/ActionBar/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/ActionBar/GridContainer/Panel3"]
+[node name="Ability3Button" type="Button" parent="CanvasLayer/ActionBar/GridContainer/Ability3"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+text = "Special 1"
 
-[node name="Panel4" type="Panel" parent="CanvasLayer/ActionBar/GridContainer"]
+[node name="Ability4" type="Panel" parent="CanvasLayer/ActionBar/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/ActionBar/GridContainer/Panel4"]
+[node name="Ability4Button" type="Button" parent="CanvasLayer/ActionBar/GridContainer/Ability4"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+text = "Special 2"
 
-[node name="Panel5" type="Panel" parent="CanvasLayer/ActionBar/GridContainer"]
+[node name="Ability5" type="Panel" parent="CanvasLayer/ActionBar/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/ActionBar/GridContainer/Panel5"]
+[node name="Ability5Button" type="Button" parent="CanvasLayer/ActionBar/GridContainer/Ability5"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+text = "Special 3"
+
+[node name="StatsPanel" type="Panel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -250.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 200.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Stats" type="Label" parent="CanvasLayer/StatsPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 14
+text = "Character Stats"
+
+[node name="DeathScreen" type="Panel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DeathScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/DeathScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "You have died!"
+horizontal_alignment = 1
+
+[node name="RespawnButton" type="Button" parent="CanvasLayer/DeathScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+text = "Respawn"
+
+[node name="LevelUpNotification" type="Panel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 20.0
+offset_right = 150.0
+offset_bottom = 80.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Label" type="Label" parent="CanvasLayer/LevelUpNotification"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 20
+text = "Level Up!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DialoguePanel" type="Panel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -150.0
+offset_right = 250.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NPCName" type="Label" parent="CanvasLayer/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "NPC Name"
+
+[node name="NPCRole" type="Label" parent="CanvasLayer/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "NPC Role"
+
+[node name="DialogueText" type="Label" parent="CanvasLayer/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Dialogue text goes here..."
+autowrap_mode = 3
+
+[node name="CloseButton" type="Button" parent="CanvasLayer/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+text = "Close"

@@ -6,6 +6,9 @@ const Packet = preload("res://packet.gd")
 const Chatbox = preload("res://Chatbox.tscn")
 const ui = preload("res://ui/UI.tscn")
 const Actor = preload("res://Actor.tscn")
+const Character = preload("res://Character.tscn")
+const FriendlyNPC = preload("res://FriendlyNPC.tscn")
+const EnemyNPC = preload("res://EnemyNPC.tscn")
 
 @onready var _network_client = NetworkClient.new()
 @onready var _login_screen = get_node("Login")
@@ -14,8 +17,12 @@ var _chatbox = null
 var state: Callable
 var _username: String
 var _actors: Dictionary = {}
+var _characters: Dictionary = {}
+var _npcs: Dictionary = {}
+var _enemies: Dictionary = {}
 var _items: Dictionary = {}
 var _quests: Dictionary = {}
+var _guilds: Dictionary = {}
 var _player_actor = null
 var _ui = null
 
@@ -138,6 +145,17 @@ func _update_models(model_data: Dictionary):
 	var func_name: String = "_update_" + model_data["model_type"].to_lower()
 	var f: Callable = Callable(self, func_name)
 	f.call(model_id, model_data)
+	match model_data["model_type"]:
+		"Character":
+			_update_character(model_data["id"], model_data)
+		"Guild":
+			_update_guild(model_data["id"], model_data)
+		"Quest":
+			_update_quest(model_data["id"], model_data)
+		"FriendlyNPC":
+			_update_friendly_npc(model_data["id"], model_data)
+		"EnemyNPC":
+			_update_enemy_npc(model_data["id"], model_data)
 
 
 func _update_actor(model_id: int, model_data: Dictionary):
@@ -156,6 +174,40 @@ func _update_actor(model_id: int, model_data: Dictionary):
 		_actors[model_id] = new_actor
 		add_child(new_actor)
 
+func _update_character(model_id: int, model_data: Dictionary):
+	if model_id in _characters:
+		_characters[model_id].update(model_data)
+	else:
+		var new_character = Character.instantiate().init(model_data)
+		_characters[model_id] = new_character
+		add_child(new_character)
+
+func _update_guild(model_id: int, model_data: Dictionary):
+	if model_id in _guilds:
+		_guilds[model_id].update(model_data)
+	else:
+		_guilds[model_id] = model_data
+		_ui.update_guilds(_guilds)
+
+func _update_quest(model_id: int, model_data: Dictionary):
+	_quests[model_id] = model_data
+	_ui.update_quests(_quests)
+
+func _update_friendly_npc(model_id: int, model_data: Dictionary):
+	if model_id in _npcs:
+		_npcs[model_id].update(model_data)
+	else:
+		var new_npc = FriendlyNPC.instantiate().init(model_data)
+		_npcs[model_id] = new_npc
+		add_child(new_npc)
+
+func _update_enemy_npc(model_id: int, model_data: Dictionary):
+	if model_id in _enemies:
+		_enemies[model_id].update(model_data)
+	else:
+		var new_enemy = EnemyNPC.instantiate().init(model_data)
+		_enemies[model_id] = new_enemy
+		add_child(new_enemy)
 
 func _enter_game():
 	state = Callable(self, "PLAY")
