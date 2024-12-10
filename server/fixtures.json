@@ -3,12 +3,26 @@
     "model": "server.entity",
     "pk": 4,
     "fields": {
-      "name": "merchant_npc"
+      "name": "player1"
     }
   },
   {
     "model": "server.entity",
     "pk": 5,
+    "fields": {
+      "name": "player2"
+    }
+  },
+  {
+    "model": "server.entity",
+    "pk": 6,
+    "fields": {
+      "name": "merchant_npc"
+    }
+  },
+  {
+    "model": "server.entity",
+    "pk": 7,
     "fields": {
       "name": "guard_npc"
     }
@@ -17,8 +31,8 @@
     "model": "server.instancedentity",
     "pk": 4,
     "fields": {
-      "x": 100.0,
-      "y": 200.0,
+      "x": 0.0,
+      "y": 0.0,
       "entity": 4
     }
   },
@@ -26,9 +40,27 @@
     "model": "server.instancedentity",
     "pk": 5,
     "fields": {
+      "x": 0.0,
+      "y": 0.0,
+      "entity": 5
+    }
+  },
+  {
+    "model": "server.instancedentity",
+    "pk": 6,
+    "fields": {
+      "x": 100.0,
+      "y": 200.0,
+      "entity": 6
+    }
+  },
+  {
+    "model": "server.instancedentity",
+    "pk": 7,
+    "fields": {
       "x": 150.0,
       "y": 250.0,
-      "entity": 5
+      "entity": 7
     }
   },
   {
@@ -76,7 +108,7 @@
       "email": "player1@example.com",
       "password": "testpass123"
     }
-  }
+  },
   {
     "model": "server.gameuser",
     "pk": 6,
@@ -102,7 +134,7 @@
     "fields": {
       "guild_name": "Shadow Walkers",
       "created_at": "2024-12-10T06:30:00.000Z",
-      "leader": 5
+      "leader": 6
     }
   },
   {
@@ -126,7 +158,7 @@
   },
   {
     "model": "server.character",
-    "pk": 5,
+    "pk": 6,
     "fields": {
       "level": 4,
       "xp": 800,
@@ -136,7 +168,7 @@
       "strength": 6,
       "magic": 8,
       "character_class": "Mage",
-      "user": 5,
+      "user": 6,
       "guild": 2,
       "character_name": "Spellweaver",
       "avatar_id": 2,
@@ -156,7 +188,7 @@
     "model": "server.actor",
     "pk": 3,
     "fields": {
-      "user": 5,
+      "user": 6,
       "instanced_entity": 5,
       "avatar_id": 2
     }
@@ -203,7 +235,7 @@
       "npc_name": "Marcus the Trader",
       "npc_x_location": 100,
       "npc_y_location": 200,
-      "instanced_entity": 4
+      "instanced_entity": 6
     }
   },
   {
@@ -214,7 +246,7 @@
       "npc_name": "Captain Steel",
       "npc_x_location": 150,
       "npc_y_location": 250,
-      "instanced_entity": 5
+      "instanced_entity": 7
     }
   },
   {
@@ -226,7 +258,7 @@
       "enemy_y_location": 400,
       "enemy_health": 50,
       "enemy_item": 1,
-      "instanced_entity": 4
+      "instanced_entity": 6
     }
   },
   {
@@ -238,7 +270,7 @@
       "enemy_y_location": 450,
       "enemy_health": 75,
       "enemy_item": 2,
-      "instanced_entity": 5
+      "instanced_entity": 7
     }
   }
 ]
