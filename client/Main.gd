@@ -38,6 +38,8 @@ func LOGIN(p):
 	match p.action:
 		"Ok":
 			_enter_game()
+		"ModelDelta":
+			_update_models(p.payloads[0])
 		"Deny":
 			var reason: String = p.payloads[0]
 			OS.alert(reason)

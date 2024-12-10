@@ -20,74 +20,79 @@ class GameServerProtocol(WebSocketServerProtocol):
 
 
     def LOGIN(self, sender: 'GameServerProtocol', p: packet.Packet):
-        if not isinstance(p, (packet.LoginPacket, packet.RegisterPacket)):
-            self.send_client(packet.DenyPacket("Invalid packet type for login state"))
+    if not isinstance(p, (packet.LoginPacket, packet.RegisterPacket)):
+        self.send_client(packet.DenyPacket("Invalid packet type for login state"))
+        return
+
+    if p.action == packet.Action.Login:
+        username, password = p.payloads
+
+        if len(username) > 50 or len(password) > 100:
+            self.send_client(packet.DenyPacket("Username or password too long"))
             return
 
-        if p.action == packet.Action.Login:
-            username, password = p.payloads
+        # Try to get an existing user whose credentials match
+        user = authenticate(username=username, password=password)
 
-            if len(username) > 50 or len(password) > 100:
-                self.send_client(packet.DenyPacket("Username or password too long"))
-                return
+        # If credentials don't match, deny and return
+        if not user:
+            self.send_client(packet.DenyPacket("Username or password incorrect"))
+            return
 
-            # Try to get an existing user whose credentials match
-            user = authenticate(username=username, password=password)
+        # If user already logged in, deny and return
+        if user.id in self.factory.user_ids_logged_in:
+            self.send_client(packet.DenyPacket("You are already logged in"))
+            return
 
-            # If credentials don't match, deny and return
-            if not user:
-                self.send_client(packet.DenyPacket("Username or password incorrect"))
-                return
+        try:
+            # Get the associated GameUser
+            game_user = models.GameUser.objects.get(user=user)
+            
+            # Get the character associated with this user
+            character = models.Character.objects.get(user=game_user)
+            
+            # Try to get the associated Actor
+            self._actor = models.Actor.objects.get(user=user)
 
-            # If user already logged in, deny and return
-            if user.id in self.factory.user_ids_logged_in:
-                self.send_client(packet.DenyPacket("You are already logged in"))
-                return
-
-            try:
-                # Try to get the associated Actor
-                self._actor = models.Actor.objects.get(user=user)
-
-            except models.Actor.DoesNotExist:
-                # If no Actor exists, create one for the user
-                player_entity = models.Entity(name=username)
-                player_entity.save()
-                player_ientity = models.InstancedEntity(entity=player_entity, x=0, y=0)
-                player_ientity.save()
-                self._actor = models.Actor(instanced_entity=player_ientity, user=user, avatar_id=0)
-                self._actor.save()
-
-            # Otherwise, proceed
-            self.send_client(packet.OkPacket())
-
-            # Send full model data the first time we log in
-            self.broadcast(packet.ModelDeltaPacket(models.create_dict(self._actor)))
-
-            self.factory.user_ids_logged_in.add(user.id)
-
-            self._state = self.PLAY
-
-
-        elif p.action == packet.Action.Register:
-            username, password, avatar_id = p.payloads
-
-            if not username or not password:
-                self.send_client(packet.DenyPacket("Username or password must not be empty"))
-                return
-
-            if models.User.objects.filter(username=username).exists():
-                self.send_client(packet.DenyPacket("This username is already taken"))
-                return
-
-            user = models.User.objects.create_user(username=username, password=password)
-            user.save()
+        except models.Actor.DoesNotExist:
+            # If no Actor exists, create one for the user
             player_entity = models.Entity(name=username)
             player_entity.save()
             player_ientity = models.InstancedEntity(entity=player_entity, x=0, y=0)
             player_ientity.save()
-            player = models.Actor(instanced_entity=player_ientity, user=user, avatar_id=avatar_id)
-            player.save()
-            self.send_client(packet.OkPacket())
+            self._actor = models.Actor(instanced_entity=player_ientity, user=user, avatar_id=0)
+            self._actor.save()
+            
+            # Create initial character if it doesn't exist
+            if not character:
+                character = models.Character(
+                    user=game_user,
+                    character_name=username,
+                    level=1,
+                    xp=0,
+                    hp=100,
+                    mp=5,
+                    vitality=10,
+                    strength=1,
+                    magic=1,
+                    character_class="Adventurer",
+                    instanced_entity=player_ientity
+                )
+                character.save()
+
+        # Send OK packet first
+        self.send_client(packet.OkPacket())
+
+        # Send character data
+        character_data = models.create_dict(character)
+        self.send_client(packet.ModelDeltaPacket(character_data))
+
+        # Send full actor model data
+        self.broadcast(packet.ModelDeltaPacket(models.create_dict(self._actor)))
+
+        self.factory.user_ids_logged_in.add(user.id)
+
+        self._state = self.PLAY
 
 
     def PLAY(self, sender: 'GameServerProtocol', p: packet.Packet):
