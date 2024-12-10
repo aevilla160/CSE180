@@ -35,7 +35,7 @@
     "model": "auth.user",
     "pk": 4,
     "fields": {
-      "password": "testpass123",
+      "password": "pbkdf2_sha256$870000$testpass123$abcdef",
       "last_login": null,
       "is_superuser": false,
       "username": "player1",
@@ -53,7 +53,7 @@
     "model": "auth.user",
     "pk": 5,
     "fields": {
-      "password": "testpass456",
+      "password": "pbkdf2_sha256$870000$testpass456$ghijkl",
       "last_login": null,
       "is_superuser": false,
       "username": "player2",
