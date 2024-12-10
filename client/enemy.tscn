@@ -1,6 +1,6 @@
 [gd_scene load_steps=40 format=3 uid="uid://b13lql0bhu1g0"]
 
-[ext_resource type="Script" path="res://enemy.gd" id="1_7h6rf"]
+[ext_resource type="Script" path="res://EnemyNPC.gd" id="1_7h6rf"]
 [ext_resource type="Texture2D" uid="uid://d36kmjjt2r0nx" path="res://game/characters/goblin scout - silhouette all animations-free/goblin scout-death 1.png" id="2_qhx03"]
 [ext_resource type="Texture2D" uid="uid://cv76wff3qou1r" path="res://game/characters/goblin scout - silhouette all animations-free/goblin scout-hit.png" id="3_7olo6"]
 [ext_resource type="Texture2D" uid="uid://04xju2mxy5e0" path="res://game/characters/goblin scout - silhouette all animations-free/goblin scout-idle.png" id="4_m3uv7"]

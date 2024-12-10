@@ -33,13 +33,14 @@ class GameFactory(WebSocketServerFactory):
         self.players.remove(p)
         if p._actor and p._actor.user.id in self.user_ids_logged_in:
             self.user_ids_logged_in.remove(p._actor.user.id)
-        
+
 
     # Override
     def buildProtocol(self, addr):
         p = super().buildProtocol(addr)
         self.players.add(p)
         return p
+
 
 if __name__ == '__main__':
     print("Starting")
