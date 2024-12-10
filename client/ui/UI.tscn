@@ -53,6 +53,7 @@ mouse_filter = 2
 layer = 100
 
 [node name="Panel" type="Panel" parent="CanvasLayer"]
+visible = false
 offset_left = 20.0
 offset_top = 20.0
 offset_right = 300.0
