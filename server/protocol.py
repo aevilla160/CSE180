@@ -24,6 +24,62 @@ class GameServerProtocol(WebSocketServerProtocol):
             self.send_client(packet.DenyPacket("Invalid packet type for login state"))
             return
 
+        elif p.action == packet.Action.Register:
+            username, password, avatar_id = p.payloads
+
+            if not username or not password:
+                self.send_client(packet.DenyPacket("Username or password must not be empty"))
+                return
+
+            if models.User.objects.filter(username=username).exists():
+                self.send_client(packet.DenyPacket("This username is already taken"))
+                return
+
+            try:
+                # Create Django User
+                user = models.User.objects.create_user(username=username, password=password)
+                user.save()
+
+                # Create GameUser
+                game_user = models.GameUser(
+                    user=user,
+                    username=username,
+                    email="",  # Add email handling if needed
+                    password=password
+                )
+                game_user.save()
+
+                # Create Entity and InstancedEntity
+                player_entity = models.Entity(name=username)
+                player_entity.save()
+                player_ientity = models.InstancedEntity(entity=player_entity, x=0, y=0)
+                player_ientity.save()
+
+                # Create Character
+                character = models.Character(
+                    level=1,
+                    xp=0,
+                    hp=100,
+                    mp=5,
+                    vitality=10,
+                    strength=1,
+                    magic=1,
+                    character_class="Adventurer",
+                    user=game_user,
+                    character_name=username,
+                    avatar_id=avatar_id,
+                    instanced_entity=player_ientity
+                )
+                character.save()
+
+                # Send success packet
+                self.send_client(packet.OkPacket())
+
+            except Exception as e:
+                print(f"Registration error: {str(e)}")
+                self.send_client(packet.DenyPacket(f"Registration failed: {str(e)}"))
+                return
+
         if p.action == packet.Action.Login:
             username, password = p.payloads
 
