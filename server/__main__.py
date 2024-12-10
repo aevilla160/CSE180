@@ -31,11 +31,9 @@ class GameFactory(WebSocketServerFactory):
 
     def remove_protocol(self, p: protocol.GameServerProtocol):
         self.players.remove(p)
-        if p._actor and p._actor.user.id in self.user_ids_logged_in:
-            self.user_ids_logged_in.remove(p._actor.user.id)
+        if p._character and p._character.user.id in self.user_ids_logged_in:
+            self.user_ids_logged_in.remove(p._character.user.id)
 
-
-    # Override
     def buildProtocol(self, addr):
         p = super().buildProtocol(addr)
         self.players.add(p)
