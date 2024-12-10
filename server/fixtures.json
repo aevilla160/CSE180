@@ -35,7 +35,7 @@
     "model": "auth.user",
     "pk": 4,
     "fields": {
-      "password": "pbkdf2_sha256$870000$testpass123$abcdef",
+      "password": "pbkdf2_sha256$870000$randomsalt$hltR/t7TojdG6t4D+nfvTJsnercnvf1rPMQP5vUplH4=",
       "last_login": null,
       "is_superuser": false,
       "username": "player1",
@@ -51,9 +51,9 @@
   },
   {
     "model": "auth.user",
-    "pk": 5,
+    "pk": 6,
     "fields": {
-      "password": "pbkdf2_sha256$870000$testpass456$ghijkl",
+      "password": "pbkdf2_sha256$870000$wBQf42ck6vH9pEVWfvAbBv$7Sjv3QECTuebSE5bFAj947fsUOT5QxOWsozOQsdpbQY=",
       "last_login": null,
       "is_superuser": false,
       "username": "player2",
@@ -76,12 +76,12 @@
       "email": "player1@example.com",
       "password": "testpass123"
     }
-  },
+  }
   {
     "model": "server.gameuser",
-    "pk": 5,
+    "pk": 6,
     "fields": {
-      "user": 5,
+      "user": 6,
       "username": "player2",
       "email": "player2@example.com",
       "password": "testpass456"
