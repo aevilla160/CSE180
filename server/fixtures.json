@@ -1,0 +1,244 @@
+[
+  {
+    "model": "server.entity",
+    "pk": 4,
+    "fields": {
+      "name": "merchant_npc"
+    }
+  },
+  {
+    "model": "server.entity",
+    "pk": 5,
+    "fields": {
+      "name": "guard_npc"
+    }
+  },
+  {
+    "model": "server.instancedentity",
+    "pk": 4,
+    "fields": {
+      "x": 100.0,
+      "y": 200.0,
+      "entity": 4
+    }
+  },
+  {
+    "model": "server.instancedentity",
+    "pk": 5,
+    "fields": {
+      "x": 150.0,
+      "y": 250.0,
+      "entity": 5
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+      "password": "testpass123",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "player1",
+      "first_name": "",
+      "last_name": "",
+      "email": "player1@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-12-10T06:00:00.000Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+      "password": "testpass456",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "player2",
+      "first_name": "",
+      "last_name": "",
+      "email": "player2@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-12-10T06:30:00.000Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "server.gameuser",
+    "pk": 4,
+    "fields": {
+      "user": 4,
+      "username": "player1",
+      "email": "player1@example.com",
+      "password": "testpass123"
+    }
+  },
+  {
+    "model": "server.gameuser",
+    "pk": 5,
+    "fields": {
+      "user": 5,
+      "username": "player2",
+      "email": "player2@example.com",
+      "password": "testpass456"
+    }
+  },
+  {
+    "model": "server.guild",
+    "pk": 1,
+    "fields": {
+      "guild_name": "Dragon Knights",
+      "created_at": "2024-12-10T06:00:00.000Z",
+      "leader": 4
+    }
+  },
+  {
+    "model": "server.guild",
+    "pk": 2,
+    "fields": {
+      "guild_name": "Shadow Walkers",
+      "created_at": "2024-12-10T06:30:00.000Z",
+      "leader": 5
+    }
+  },
+  {
+    "model": "server.character",
+    "pk": 4,
+    "fields": {
+      "level": 5,
+      "xp": 1000,
+      "hp": 150,
+      "mp": 20,
+      "vitality": 15,
+      "strength": 8,
+      "magic": 5,
+      "character_class": "Warrior",
+      "user": 4,
+      "guild": 1,
+      "character_name": "DragonSlayer",
+      "avatar_id": 1,
+      "instanced_entity": 4
+    }
+  },
+  {
+    "model": "server.character",
+    "pk": 5,
+    "fields": {
+      "level": 4,
+      "xp": 800,
+      "hp": 120,
+      "mp": 30,
+      "vitality": 12,
+      "strength": 6,
+      "magic": 8,
+      "character_class": "Mage",
+      "user": 5,
+      "guild": 2,
+      "character_name": "Spellweaver",
+      "avatar_id": 2,
+      "instanced_entity": 5
+    }
+  },
+  {
+    "model": "server.actor",
+    "pk": 2,
+    "fields": {
+      "user": 4,
+      "instanced_entity": 4,
+      "avatar_id": 1
+    }
+  },
+  {
+    "model": "server.actor",
+    "pk": 3,
+    "fields": {
+      "user": 5,
+      "instanced_entity": 5,
+      "avatar_id": 2
+    }
+  },
+  {
+    "model": "server.quest",
+    "pk": 1,
+    "fields": {
+      "quest_id": 1,
+      "quest_status": "available"
+    }
+  },
+  {
+    "model": "server.quest",
+    "pk": 2,
+    "fields": {
+      "quest_id": 2,
+      "quest_status": "in_progress"
+    }
+  },
+  {
+    "model": "server.item",
+    "pk": 1,
+    "fields": {
+      "rarity": "Rare",
+      "item_name": "Flaming Sword",
+      "item_type": "Weapon"
+    }
+  },
+  {
+    "model": "server.item",
+    "pk": 2,
+    "fields": {
+      "rarity": "Epic",
+      "item_name": "Crystal Staff",
+      "item_type": "Weapon"
+    }
+  },
+  {
+    "model": "server.friendlynpc",
+    "pk": 1,
+    "fields": {
+      "npc_role": "Merchant",
+      "npc_name": "Marcus the Trader",
+      "npc_x_location": 100,
+      "npc_y_location": 200,
+      "instanced_entity": 4
+    }
+  },
+  {
+    "model": "server.friendlynpc",
+    "pk": 2,
+    "fields": {
+      "npc_role": "Guard",
+      "npc_name": "Captain Steel",
+      "npc_x_location": 150,
+      "npc_y_location": 250,
+      "instanced_entity": 5
+    }
+  },
+  {
+    "model": "server.enemynpc",
+    "pk": 1,
+    "fields": {
+      "enemy_name": "Dark Wolf",
+      "enemy_x_location": 300,
+      "enemy_y_location": 400,
+      "enemy_health": 50,
+      "enemy_item": 1,
+      "instanced_entity": 4
+    }
+  },
+  {
+    "model": "server.enemynpc",
+    "pk": 2,
+    "fields": {
+      "enemy_name": "Shadow Mage",
+      "enemy_x_location": 350,
+      "enemy_y_location": 450,
+      "enemy_health": 75,
+      "enemy_item": 2,
+      "instanced_entity": 5
+    }
+  }
+]
