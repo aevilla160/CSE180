@@ -78,7 +78,6 @@ class GameUser(models.Model):
     username = models.CharField(max_length=50)
     email = models.EmailField(max_length=100)
     password = models.CharField(max_length=100)
-    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         db_table = 'user'
