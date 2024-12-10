@@ -1,5 +1,6 @@
 extends "res://model.gd"
 
+@onready var Actor = get_node("$.")
 @onready var body: CharacterBody2D = get_node("CharacterBody2D")
 @onready var label: Label = get_node("CharacterBody2D/Label")
 @onready var sprite: Sprite2D = get_node("CharacterBody2D/Avatar")
@@ -10,15 +11,21 @@ var initialised_position: bool = false
 var actor_name: String
 var velocity: Vector2 = Vector2.ZERO
 
-var is_player: bool = false
+@export var is_player: bool = false
+@export var is_enemy: bool = false
 var _player_target: Vector2
 
 var rubber_band_radius: float = 200
 
 var speed: float = 70.0
+var enemy_speed: float = 25.0
+
+var target_chase = false
+var active_target = null
 
 func _ready():
 	update(initial_data)
+
 
 func update(new_model: Dictionary):
 	super.update(new_model)
@@ -49,10 +56,24 @@ func update(new_model: Dictionary):
 				if label:
 					label.text = actor_name
 
-func _physics_process(delta):	
+
+func _on_detection_area_body_entered(body: Node2D) -> void:
+	if is_enemy:
+		active_target = body
+		target_chase = true
+
+
+func _on_detection_area_body_exited(body: Node2D) -> void:
+	active_target = null
+	target_chase = false
+
+
+func _physics_process(delta):    
 	var target: Vector2
 	if is_player:
 		target = _player_target
+	elif target_chase and active_target:
+		target = active_target.body.position
 	else:
 		target = server_position
 		
@@ -63,6 +84,7 @@ func _physics_process(delta):
 		velocity = body.velocity
 	else:
 		velocity = Vector2.ZERO
+
 
 func _process(delta):
 	# Get the direction angle

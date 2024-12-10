@@ -9,3 +9,5 @@ func init(init_data: Dictionary):
 
 func update(new_model: Dictionary):
 	data = new_model
+	if new_model.has("enemy_health") or new_model.has("npc_role"):
+		data = new_model

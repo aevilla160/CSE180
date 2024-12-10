@@ -11,6 +11,18 @@ class Action(enum.Enum):
     Chat = enum.auto()
     ModelDelta = enum.auto()
     Target = enum.auto()
+    Attack = enum.auto()
+    Damage = enum.auto()
+    Heal = enum.auto()
+    Die = enum.auto()
+    CreateGuild = enum.auto()
+    JoinGuild = enum.auto()
+    LeaveGuild = enum.auto()
+    GetQuest = enum.auto()
+    CompleteQuest = enum.auto()
+    GetItem = enum.auto()
+    LoseItem = enum.auto()
+    TalkFriendlyNPC = enum.auto()
 
 
 class Packet:
@@ -59,6 +71,50 @@ class ModelDeltaPacket(Packet):
 class TargetPacket(Packet):
     def __init__(self, t_x: float, t_y: float):
         super().__init__(Action.Target, t_x, t_y)
+
+class AttackPacket(Packet):
+    def __init__(self, actor_id: int, target_actor_id: int, damage: int):
+        super().__init__(Action.Attack, actor_id, target_actor_id, damage)
+
+class HealPacket(Packet):
+    def __init__(self, actor_id: int, target_actor_id: int, healing: int):
+        super().__init__(Action.Attack, actor_id, target_actor_id, healing)
+
+class DiePacket(Packet):
+    def __init__(self, actor_id: int):
+        super().__init__(Action.Die, actor_id)
+
+class CreateGuildPacket(Packet):
+    def __init__(self, ):
+        super().__init__(Action.CreateGuild)
+
+class JoinGuildPacket(Packet):
+    def __init__(self, ):
+        super().__init__(Action.JoinGuild)
+
+class LeaveGuildPacket(Packet):
+    def __init__(self, ):
+        super().__init__(Action.LeaveGuild)
+
+class GetQuestPacket(Packet):
+    def __init__(self, actor_id: int, quest_id: int):
+        super().__init__(Action.GetQuest, actor_id, quest_id)
+
+class CompleteQuestPacket(Packet):
+    def __init__(self, actor_id: int, quest_id: int):
+        super().__init__(Action.CompleteQuest, actor_id, quest_id)
+
+class GetItemPacket(Packet):
+    def __init__(self, actor_id: int, item_id: int):
+        super().__init__(Action.GetItem, actor_id, item_id)
+
+class LoseItemPacket(Packet):
+    def __init__(self, actor_id: int, item_id: int):
+        super().__init__(Action.LoseItem, actor_id, item_id)
+
+class TalkFriendlyNPCPacket(Packet):
+    def __init__(self, actor_id: int, target_actor_id: int):
+        super().__init__(Action.TalkFriendlyNPC, actor_id, target_actor_id)
 
 
 def from_json(json_str: str) -> Packet:

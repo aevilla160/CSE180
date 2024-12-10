@@ -13,13 +13,31 @@ def create_dict(model: models.Model) -> dict:
     model_type: type = type(model)
     d["model_type"] = model_type.__name__
 
+    if model_type == Guild:
+        if d.get('created_at'):
+            d['created_at'] = d['created_at'].isoformat()
+
     if model_type == InstancedEntity:
         d["entity"] = create_dict(model.entity)
 
     elif model_type == Actor:
         d["instanced_entity"] = create_dict(model.instanced_entity)
-        # Purposefully don't include user information here.
-    
+
+    elif model_type == Character:
+        d["user"] = create_dict(model.user) if model.user else None
+        d["guild"] = create_dict(model.guild) if model.guild else None
+        d["instanced_entity"] = create_dict(model.instanced_entity)
+
+    elif model_type == Guild:
+        d["leader"] = create_dict(model.leader) if model.leader else None
+
+    elif model_type == FriendlyNPC:
+        d["instanced_entity"] = create_dict(model.instanced_entity)
+
+    elif model_type == EnemyNPC:
+        d["instanced_entity"] = create_dict(model.instanced_entity)
+        d["enemy_item"] = create_dict(model.enemy_item) if model.enemy_item else None
+
     return d
 
 def get_delta_dict(model_dict_before: dict, model_dict_after: dict) -> dict:
@@ -63,7 +81,6 @@ class GameUser(models.Model):
     username = models.CharField(max_length=50)
     email = models.EmailField(max_length=100)
     password = models.CharField(max_length=100)
-    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         db_table = 'user'
@@ -77,8 +94,14 @@ class Guild(models.Model):
         db_table = 'guild'
 
 class Character(models.Model):
-    level = models.IntegerField()
-    character_class = models.CharField(max_length=50)
+    level = models.IntegerField(default=1)
+    xp = models.IntegerField(default=0)
+    hp = models.IntegerField(default=100)
+    mp = models.IntegerField(default=5)
+    vitality = models.IntegerField(default=10)
+    strength = models.IntegerField(default=1)
+    magic = models.IntegerField(default=1)
+    character_class = models.CharField(max_length=16)
     user = models.ForeignKey(GameUser, on_delete=models.CASCADE, null=True)
     guild = models.ForeignKey(Guild, on_delete=models.SET_NULL, null=True)
     character_name = models.CharField(max_length=100)
@@ -89,9 +112,8 @@ class Character(models.Model):
         db_table = 'character'
 
 class Quest(models.Model):
-    quest_name = models.CharField(max_length=100)
-    difficulty = models.CharField(max_length=50)
-    reward = models.CharField(max_length=100)
+    quest_id = models.IntegerField(default=0)
+    quest_status = models.CharField(max_length=16, default="available")
 
     class Meta:
         db_table = 'quests'
@@ -107,6 +129,8 @@ class Item(models.Model):
 class FriendlyNPC(models.Model):
     npc_role = models.CharField(max_length=100)
     npc_name = models.CharField(max_length=100)
+    npc_x_location = models.IntegerField(default=0)
+    npc_y_location = models.IntegerField(default=0)
     instanced_entity = models.OneToOneField(InstancedEntity, on_delete=models.CASCADE)
 
     class Meta:
@@ -114,6 +138,9 @@ class FriendlyNPC(models.Model):
 
 class EnemyNPC(models.Model):
     enemy_name = models.CharField(max_length=100)
+    enemy_x_location = models.IntegerField(default=0)
+    enemy_y_location = models.IntegerField(default=0)
+    enemy_health = models.IntegerField(default=10)
     enemy_item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
     instanced_entity = models.OneToOneField(InstancedEntity, on_delete=models.CASCADE)
 
