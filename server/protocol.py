@@ -13,7 +13,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         super().__init__()
         self._packet_queue: queue.Queue[tuple['GameServerProtocol', packet.Packet]] = queue.Queue()
         self._state: callable = self.LOGIN
-        self._actor: models.Actor = None
+        self._character: models.Character = None  # Changed from _actor
         self._player_target: list = None
         self._last_delta_time_checked = None
         self._known_others: set['GameServerProtocol'] = set()
@@ -105,7 +105,7 @@ class GameServerProtocol(WebSocketServerProtocol):
             self.send_client(p)
             if sender not in self._known_others:
                 # Send our full model data to the new player
-                sender.onPacket(self, packet.ModelDeltaPacket(models.create_dict(self._actor)))
+                sender.onPacket(self, packet.ModelDeltaPacket(models.create_dict(self._character)))
                 self._known_others.add(sender)
 
         elif p.action == packet.Action.Target:
@@ -135,7 +135,7 @@ class GameServerProtocol(WebSocketServerProtocol):
 
         elif p.action == packet.Action.CreateGuild:
             guild_name = p.payloads[0]
-            leader = models.GameUser.objects.get(user=self._actor.user)
+            leader = models.GameUser.objects.get(user=self._character.user)
 
             guild = models.Guild(guild_name=guild_name, leader=leader)
             guild.save()
@@ -192,10 +192,10 @@ class GameServerProtocol(WebSocketServerProtocol):
 
 
     def _update_position(self) -> bool:
-        "Attempt to update the actor's position and return true only if the position was changed"
+        "Attempt to update the character's position and return true only if the position was changed"
         if not self._player_target:
             return False
-        pos = [self._actor.instanced_entity.x, self._actor.instanced_entity.y]
+        pos = [self._character.instanced_entity.x, self._character.instanced_entity.y]
 
         now: float = time.time()
         delta_time: float = 1 / self.factory.tickrate
@@ -212,9 +212,9 @@ class GameServerProtocol(WebSocketServerProtocol):
 
         # Update our model if we're not already close enough to the target
         d_x, d_y = utils.direction_to(pos, self._player_target)
-        self._actor.instanced_entity.x += d_x * dist
-        self._actor.instanced_entity.y += d_y * dist
-        self._actor.instanced_entity.save()
+        self._character.instanced_entity.x += d_x * dist
+        self._character.instanced_entity.y += d_y * dist
+        self._character.instanced_entity.save()
 
         return True
 
@@ -228,10 +228,10 @@ class GameServerProtocol(WebSocketServerProtocol):
 
         # To do when there are no packets to process
         elif self._state == self.PLAY: 
-            actor_dict_before: dict = models.create_dict(self._actor)
+            character_dict_before: dict = models.create_dict(self._character)
             if self._update_position():
-                actor_dict_after: dict = models.create_dict(self._actor)
-                self.broadcast(packet.ModelDeltaPacket(models.get_delta_dict(actor_dict_before, actor_dict_after)))
+                character_dict_after: dict = models.create_dict(self._character)
+                self.broadcast(packet.ModelDeltaPacket(models.get_delta_dict(character_dict_before, character_dict_after)))
 
 
     def broadcast(self, p: packet.Packet, exclude_self: bool = False):
@@ -253,9 +253,9 @@ class GameServerProtocol(WebSocketServerProtocol):
 
     # Override
     def onClose(self, wasClean, code, reason):
-        if self._actor:
-            self._actor.save()
-            self.broadcast(packet.DisconnectPacket(self._actor.id), exclude_self=True)
+        if self._character:
+            self._character.save()
+            self.broadcast(packet.DisconnectPacket(self._character.id), exclude_self=True)
         self.factory.remove_protocol(self)
         print(f"Websocket connection closed{' unexpectedly' if not wasClean else ' cleanly'} with code {code}: {reason}")
 
