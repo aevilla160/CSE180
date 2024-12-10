@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cgv80kk40ps3m"]
+[gd_scene load_steps=7 format=3 uid="uid://cgv80kk40ps3m"]
 
 [ext_resource type="PackedScene" uid="uid://b6mtufhmvgyqo" path="res://Actor.tscn" id="1_base"]
 [ext_resource type="Script" path="res://Character.gd" id="2_script"]
+[ext_resource type="Texture2D" uid="uid://btch3w3yq11gy" path="res://tilemap_packed.png" id="3_y45es"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.2, 0.2, 0.2, 0.8)
@@ -10,42 +11,40 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fill"]
 bg_color = Color(0.87451, 0, 0, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mp"]
-bg_color = Color(0.243304, 0.522109, 1, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xp"]
-bg_color = Color(0.717339, 0.581814, 1.92523e-07, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_attack"]
-radius = 60.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x865r"]
+radius = 17.0
+height = 58.0
 
 [node name="Character" instance=ExtResource("1_base")]
+z_index = 5
 script = ExtResource("2_script")
 
 [node name="CharacterBody2D" parent="." index="0"]
 collision_layer = 2
 collision_mask = 13
 
-[node name="Label" parent="CharacterBody2D" index="1"]
-offset_top = -70.0
-offset_bottom = -54.0
+[node name="Camera2D" type="Camera2D" parent="CharacterBody2D" index="0"]
+enabled = false
+position_smoothing_enabled = true
 
-[node name="StatusBars" type="VBoxContainer" parent="CharacterBody2D" index="2"]
+[node name="Label" parent="CharacterBody2D" index="1"]
+offset_left = -53.0
+offset_top = -70.0
+offset_right = 53.0
+offset_bottom = -54.0
+vertical_alignment = 0
+
+[node name="Avatar" parent="CharacterBody2D" index="2"]
+texture = ExtResource("3_y45es")
+
+[node name="StatusBars" type="VBoxContainer" parent="CharacterBody2D" index="3"]
 offset_left = -30.0
 offset_top = -50.0
 offset_right = 30.0
@@ -53,56 +52,19 @@ offset_bottom = -26.0
 theme_override_constants/separation = 2
 
 [node name="HealthBar" type="ProgressBar" parent="CharacterBody2D/StatusBars" index="0"]
-custom_minimum_size = Vector2(0, 6)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_hp")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fill")
 value = 100.0
 show_percentage = false
 
 [node name="ManaBar" type="ProgressBar" parent="CharacterBody2D/StatusBars" index="1"]
-custom_minimum_size = Vector2(0, 6)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_mp")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fill")
 value = 100.0
 show_percentage = false
 
-[node name="XPBar" type="ProgressBar" parent="CharacterBody2D/StatusBars" index="2"]
-custom_minimum_size = Vector2(0, 6)
-layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_xp")
-value = 50.0
-show_percentage = false
-
-[node name="GuildLabel" type="Label" parent="CharacterBody2D" index="3"]
-visible = false
-offset_left = -100.0
-offset_top = -54.0
-offset_right = 100.0
-offset_bottom = -38.0
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="LevelLabel" type="Label" parent="CharacterBody2D" index="4"]
-offset_left = -100.0
-offset_top = -86.0
-offset_right = 100.0
-offset_bottom = -70.0
-text = "Level 1"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="AttackArea" type="Area2D" parent="CharacterBody2D" index="5"]
-collision_layer = 0
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/AttackArea" index="0"]
-shape = SubResource("CircleShape2D_attack")
-
-[node name="Avatar" parent="CharacterBody2D" index="6"]
-texture = null
-
-[connection signal="body_entered" from="CharacterBody2D/AttackArea" to="." method="_on_attack_area_body_entered"]
-[connection signal="body_exited" from="CharacterBody2D/AttackArea" to="." method="_on_attack_area_body_exited"]
+[node name="CollisionShape2D" parent="CharacterBody2D" index="4"]
+position = Vector2(-1, 3)
+shape = SubResource("CapsuleShape2D_x865r")

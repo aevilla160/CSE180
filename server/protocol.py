@@ -109,35 +109,29 @@ class GameServerProtocol(WebSocketServerProtocol):
                 
                 # Get the character associated with this user
                 character = models.Character.objects.get(user=game_user)
-                
-                # Try to get the associated Actor
-                self._actor = models.Actor.objects.get(user=user)
 
-            except models.Actor.DoesNotExist:
+            except models.Character.DoesNotExist:
                 # If no Actor exists, create one for the user
                 player_entity = models.Entity(name=username)
                 player_entity.save()
                 player_ientity = models.InstancedEntity(entity=player_entity, x=0, y=0)
                 player_ientity.save()
-                self._actor = models.Actor(instanced_entity=player_ientity, user=user, avatar_id=0)
-                self._actor.save()
                 
-                # Create initial character if it doesn't exist
-                if not character:
-                    character = models.Character(
-                        user=game_user,
-                        character_name=username,
-                        level=1,
-                        xp=0,
-                        hp=100,
-                        mp=5,
-                        vitality=10,
-                        strength=1,
-                        magic=1,
-                        character_class="Adventurer",
-                        instanced_entity=player_ientity
-                    )
-                    character.save()
+
+                character = models.Character(
+                    user=game_user,
+                    character_name=username,
+                    level=1,
+                    xp=0,
+                    hp=100,
+                    mp=5,
+                    vitality=10,
+                    strength=1,
+                    magic=1,
+                    character_class="Adventurer",
+                    instanced_entity=player_ientity
+                )
+                character.save()
 
             # Send OK packet first
             self.send_client(packet.OkPacket())

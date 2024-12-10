@@ -18,9 +18,10 @@ var character_name: String = ""
 var guild_name: String = ""
 
 # UI Elements
-@onready var health_bar = get_node("CharacterBody2D/HealthBar")
-@onready var mana_bar = get_node("CharacterBody2D/ManaBar")
-@onready var level_label = get_node("CharacterBody2D/LevelLabel")
+@onready var camera = get_node("CharacterBody2D/Camera2D")
+@onready var health_bar = get_node("CharacterBody2D/StatusBars/HealthBar")
+@onready var mana_bar = get_node("CharacterBody2D/StatusBars/ManaBar")
+@onready var level_label = get_node("CharacterBody2D/Label")
 
 # Combat state
 var is_attacking: bool = false
@@ -30,7 +31,11 @@ var time_since_last_attack: float = 0.0
 
 func _ready():
 	super._ready()
-	# Initialize UI elements
+	print("Character ready, is_player: ", is_player)
+	if is_player:
+		print("Enabling camera for player character")
+		if camera:
+			camera.enabled = true
 	if health_bar:
 		health_bar.max_value = hp
 		health_bar.value = hp
@@ -39,6 +44,8 @@ func _ready():
 		mana_bar.value = mp
 	if level_label:
 		level_label.text = "Lv.%s" % [level]
+	#if is_player and camera:
+		#camera.enabled = true
 
 
 func calculate_required_xp() -> int:
