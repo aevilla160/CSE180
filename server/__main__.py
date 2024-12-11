@@ -19,6 +19,10 @@ class GameFactory(WebSocketServerFactory):
         # super().__init__(f"wss://{hostname}:{port}")
         super().__init__(f"ws://{hostname}:{port}")
 
+        self.setProtocolOptions(openHandshakeTimeout=30)
+        self.setProtocolOptions(autoPingInterval=0)
+        self.setProtocolOptions(allowedOrigins=["*"])
+
         self.players: set[protocol.GameServerProtocol] = set()
         self.tickrate: int = 20
         self.user_ids_logged_in: set[int] = set()
