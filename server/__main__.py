@@ -16,6 +16,7 @@ from twisted.internet import reactor, task, ssl
 class GameFactory(WebSocketServerFactory):
     def __init__(self, hostname: str, port: int):
         self.protocol = protocol.GameServerProtocol
+        # super().__init__(f"wss://{hostname}:{port}")
         super().__init__(f"ws://{hostname}:{port}")
 
         self.players: set[protocol.GameServerProtocol] = set()
@@ -69,6 +70,7 @@ if __name__ == '__main__':
     factory = GameFactory('0.0.0.0', PORT)
 
     logger.info(f"Server listening on port {PORT}")
-    reactor.listenSSL(PORT, factory, cert_options)
+    # reactor.listenSSL(PORT, factory, cert_options)
+    reactor.listenTCP(PORT, factory)
 
     reactor.run()
