@@ -17,8 +17,6 @@ func _ready():
 	
 	print("Attempting connection to: ", websocket_url)
 	
-	socket.handshake_timeout = 30000
-	
 	var err = socket.connect_to_url(websocket_url)
 
 	if err != OK:
