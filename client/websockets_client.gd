@@ -9,7 +9,7 @@ signal error
 
 var socket = WebSocketPeer.new()
 var last_state = WebSocketPeer.STATE_CLOSED
-var tls_cert := X509Certificate.new()
+#var tls_cert := X509Certificate.new()
 
 #var should_reconnect = true
 #var reconnect_delay = 5.0
@@ -20,14 +20,15 @@ func _ready():
 	var port = 8081
 	var websocket_url = "wss://%s:%d" % [hostname, port]
 	
-	tls_cert.load("res://certs/ca-cert.crt")
+	#tls_cert.load("res://certs/ca-cert.crt")
 	
 	print("Attempting connection to: ", websocket_url)
 	
-	var tls_options = TLSOptions.client(tls_cert)
+	var options = TLSOptions.client_unsafe()
+	#var tls_options = TLSOptions.client(tls_cert)
 	
-	#var err = socket.connect_to_url(websocket_url)
-	var err = socket.connect_to_url(websocket_url, tls_options)
+	var err = socket.connect_to_url(websocket_url, options)
+	#var err = socket.connect_to_url(websocket_url, tls_options)
 
 	if err != OK:
 		print("Unable to connect, error code: ", err)
