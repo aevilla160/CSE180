@@ -10,14 +10,14 @@ signal error
 var socket = WebSocketPeer.new()
 var last_state = WebSocketPeer.STATE_CLOSED
 
-var should_reconnect = true
-var reconnect_delay = 5.0
-var reconnect_timer = 0.0
+#var should_reconnect = true
+#var reconnect_delay = 5.0
+#var reconnect_timer = 0.0
 
 func _ready():
 	var hostname = "149.28.223.185"
 	var port = 8081
-	var websocket_url = "ws://%s:%d" % [hostname, port]
+	var websocket_url = "wss://%s:%d" % [hostname, port]
 	
 	print("Attempting connection to: ", websocket_url)
 	
