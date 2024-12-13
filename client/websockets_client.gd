@@ -32,11 +32,11 @@ func _ready():
 	print("Connection initiated")
 
 func _process(delta):
-	if socket.get_ready_state() == WebSocketPeer.STATE_CLOSED and should_reconnect:
-		reconnect_timer += delta
-		if reconnect_timer >= reconnect_delay:
-			reconnect_timer = 0.0
-			_ready()
+	#if socket.get_ready_state() == WebSocketPeer.STATE_CLOSED and should_reconnect:
+		#reconnect_timer += delta
+		#if reconnect_timer >= reconnect_delay:
+			#reconnect_timer = 0.0
+			#_ready()
 	socket.poll()
 	var state = socket.get_ready_state()
 	match state:
