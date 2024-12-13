@@ -10,6 +10,10 @@ signal error
 var socket = WebSocketPeer.new()
 var last_state = WebSocketPeer.STATE_CLOSED
 
+var should_reconnect = true
+var reconnect_delay = 5.0
+var reconnect_timer = 0.0
+
 func _ready():
 	var hostname = "149.28.223.185"
 	var port = 8081
@@ -28,14 +32,23 @@ func _ready():
 	print("Connection initiated")
 
 func _process(delta):
+	if socket.get_ready_state() == WebSocketPeer.STATE_CLOSED and should_reconnect:
+		reconnect_timer += delta
+		if reconnect_timer >= reconnect_delay:
+			reconnect_timer = 0.0
+			_ready()
 	socket.poll()
 	var state = socket.get_ready_state()
 	match state:
 		WebSocketPeer.STATE_OPEN:
 			while socket.get_available_packet_count():
 				var packet = socket.get_packet()
-				print("Received packet: ", packet.get_string_from_utf8())
-				data.emit(packet.get_string_from_utf8())
+				if socket.was_string_packet():
+					var text = packet.get_string_from_utf8()
+					print("Received packet: ", text)
+					data.emit(text)
+				else:
+					print("Received invalid packet type")
 		WebSocketPeer.STATE_CONNECTING:
 			print("Still connecting...")
 		WebSocketPeer.STATE_CLOSING:

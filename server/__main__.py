@@ -20,7 +20,8 @@ class GameFactory(WebSocketServerFactory):
         super().__init__(f"ws://{hostname}:{port}")
 
         self.setProtocolOptions(openHandshakeTimeout=30)
-        self.setProtocolOptions(autoPingInterval=0)
+        self.setProtocolOptions(autoPingInterval=30)  
+        self.setProtocolOptions(autoPingTimeout=5)
         self.setProtocolOptions(allowedOrigins=["*"])
 
         self.players: set[protocol.GameServerProtocol] = set()
