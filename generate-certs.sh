@@ -12,7 +12,7 @@ openssl req -x509 \
     -out ca-cert.cert \
     -days 365 \
     -nodes \
-    -subj "/C=US/ST=California/CN=127.0.0.1"
+    -subj "/C=US/ST=California/CN=149.28.223.185"
 
 echo "CA's self-signed certificate"
 openssl x509 -in ca-cert.cert -noout -text
@@ -22,12 +22,12 @@ openssl req \
     -newkey rsa:4096 \
     -nodes \
     -keyout server-key.key \
-    -out server-req.pem \
+    -out server-req.req \
     -subj "/C=US/ST=California/CN=127.0.0.1"
 
 # 3. Use CA's private key to sign web server's CSR and get back the signed certificate
 openssl x509 -req \
-    -in server-req.pem \
+    -in server-req.req \
     -days 60 \
     -CA ca-cert.cert \
     -CAkey ca-key.key \

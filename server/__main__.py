@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
     PORT: int = 8081
     factory = GameFactory('0.0.0.0', PORT)
-    contextFactory = ssl.DefaultOpenSSLContextFactory(certs_dir + "ca-key.pem", certs_dir + "ca-cert.pem")
+    contextFactory = ssl.DefaultOpenSSLContextFactory(certs_dir + "ca-key.key", certs_dir + "ca-cert.cert")
 
     logger.info(f"Server listening on port {PORT}")
     reactor.listenSSL(PORT, factory, contextFactory)
