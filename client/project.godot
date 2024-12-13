@@ -31,7 +31,7 @@ click={
 
 [network]
 
-tls/certificate_bundle_override="res://certs/ca-cert.crt"
+tls/certificate_bundle_override="res://certs/server-cert.crt"
 
 [physics]
 
