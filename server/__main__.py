@@ -61,7 +61,7 @@ if __name__ == '__main__':
     certs_dir: str = f"{sys.path[0]}/certs/"
 
     private_key_data = open(os.path.join(certs_dir, "ca-key.key"), "rb").read()
-    certificate_data = open(os.path.join(certs_dir, "ca-cert.crt"), "rb").read()
+    certificate_data = open(os.path.join(certs_dir, "server-cert.crt"), "rb").read()
 
     private_key = crypto.load_privatekey(crypto.FILETYPE_PEM, private_key_data)
     certificate = crypto.load_certificate(crypto.FILETYPE_PEM, certificate_data)
