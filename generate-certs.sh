@@ -8,20 +8,20 @@ rm *.pem
 # 1. Generate CA's private key and self-signed certificate
 openssl req -x509 \
     -newkey rsa:4096 \
-    -keyout ca-key.pem \
-    -out ca-cert.pem \
+    -keyout ca-key.key \
+    -out ca-cert.cert \
     -days 365 \
     -nodes \
     -subj "/C=US/ST=California/CN=127.0.0.1"
 
 echo "CA's self-signed certificate"
-openssl x509 -in ca-cert.pem -noout -text
+openssl x509 -in ca-cert.cert -noout -text
 
 # 2. Generate web server's private key and certificate signing request (CSR)
 openssl req \
     -newkey rsa:4096 \
     -nodes \
-    -keyout server-key.pem \
+    -keyout server-key.key \
     -out server-req.pem \
     -subj "/C=US/ST=California/CN=127.0.0.1"
 
@@ -29,13 +29,13 @@ openssl req \
 openssl x509 -req \
     -in server-req.pem \
     -days 60 \
-    -CA ca-cert.pem \
-    -CAkey ca-key.pem \
+    -CA ca-cert.cert \
+    -CAkey ca-key.key \
     -CAcreateserial \
-    -out server-cert.pem \
+    -out server-cert.cert \
     -extfile server-ext.cnf
 
 echo "Server's signed certificate"
-openssl x509 -in server-cert.pem -noout -text
+openssl x509 -in server-cert.cert -noout -text
 
-openssl verify -CAfile ca-cert.pem server-cert.pem
+openssl verify -CAfile ca-cert.cert server-cert.cert
