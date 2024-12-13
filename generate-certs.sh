@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Create certs directory if it doesn't exist
-mkdir -p certs
+mkdir -p server/certs
+mkdir -p /certs
 cd certs
 rm *.key
 rm *.cert
@@ -41,3 +42,6 @@ echo "Server's signed certificate"
 openssl x509 -in server-cert.cert -noout -text
 
 openssl verify -CAfile ca-cert.cert server-cert.cert
+
+cp *.key ../server/certs/
+cp *.cert ../server/certs/
