@@ -20,7 +20,7 @@ func _ready():
 	var port = 8081
 	var websocket_url = "wss://%s:%d" % [hostname, port]
 	
-	tls_cert.load("res://certs/ca-cert.pem")
+	tls_cert.load("res://certs/ca-cert.crt")
 	
 	print("Attempting connection to: ", websocket_url)
 	

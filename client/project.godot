@@ -29,6 +29,10 @@ click={
 ]
 }
 
+[network]
+
+tls/certificate_bundle_override="res://certs/ca-cert.crt"
+
 [physics]
 
 common/enable_pause_aware_picking=true
