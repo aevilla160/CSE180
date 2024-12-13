@@ -3,7 +3,9 @@
 # Create certs directory if it doesn't exist
 mkdir -p certs
 cd certs
-rm *.pem
+rm *.key
+rm *.cert
+rm *.req
 
 # 1. Generate CA's private key and self-signed certificate
 openssl req -x509 \
@@ -23,7 +25,7 @@ openssl req \
     -nodes \
     -keyout server-key.key \
     -out server-req.req \
-    -subj "/C=US/ST=California/CN=127.0.0.1"
+    -subj "/C=US/ST=California/CN=killgorealpha.com"
 
 # 3. Use CA's private key to sign web server's CSR and get back the signed certificate
 openssl x509 -req \
