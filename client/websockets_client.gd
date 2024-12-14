@@ -16,7 +16,7 @@ var tls_cert := X509Certificate.new()
 #var reconnect_timer = 0.0
 
 func _ready():
-	var hostname = "killgorealpha.com"
+	var hostname = "127.0.0.1"
 	var port = 8081
 	var websocket_url = "wss://%s:%d" % [hostname, port]
 	
