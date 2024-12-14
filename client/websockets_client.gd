@@ -20,11 +20,11 @@ func _ready():
 	var port = 4443
 	var websocket_url = "wss://%s:%d" % [hostname, port]
 	
-	#tls_cert.load("res://certs/ca-cert.crt")
+	tls_cert.load("res://certs/ca-cert.crt")
 	
 	print("Attempting connection to: ", websocket_url)
 	
-	var tls_options = TLSOptions.client_unsafe()
+	var tls_options = TLSOptions.client_unsafe(tls_cert)
 	#var tls_options = TLSOptions.client(tls_cert)
 	
 	#var err = socket.connect_to_url(websocket_url, options)
