@@ -24,8 +24,8 @@ func _ready():
 	
 	print("Attempting connection to: ", websocket_url)
 	
-	#var options = TLSOptions.client_unsafe()
-	var tls_options = TLSOptions.client(tls_cert)
+	var tls_options = TLSOptions.client_unsafe(tls_cert)
+	#var tls_options = TLSOptions.client(tls_cert)
 	
 	#var err = socket.connect_to_url(websocket_url, options)
 	var err = socket.connect_to_url(websocket_url, tls_options)
