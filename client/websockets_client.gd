@@ -17,7 +17,7 @@ var tls_cert := X509Certificate.new()
 
 func _ready():
 	var hostname = "127.0.0.1"
-	var port = 8081
+	var port = 4443
 	var websocket_url = "wss://%s:%d" % [hostname, port]
 	
 	tls_cert.load("res://certs/ca-cert.crt")

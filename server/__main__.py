@@ -71,7 +71,7 @@ if __name__ == '__main__':
         certificate=certificate,
     )
 
-    PORT: int = 8081
+    PORT: int = 4443
     factory = GameFactory('0.0.0.0', PORT)
     # contextFactory = ssl.DefaultOpenSSLContextFactory(certs_dir + "ca-key.key", certs_dir + "ca-cert.crt")
 
