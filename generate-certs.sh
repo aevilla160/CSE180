@@ -15,7 +15,7 @@ openssl req -x509 \
     -out ca-cert.crt \
     -days 365 \
     -nodes \
-    -subj "/C=US/ST=California/CN=149.28.223.185"
+    -subj "/C=US/ST=California/CN=gameserver.killogrealpha.com"
 
 echo "CA's self-signed certificate"
 openssl x509 -in ca-cert.crt -noout -text
@@ -26,7 +26,7 @@ openssl req \
     -nodes \
     -keyout server-key.key \
     -out server-req.req \
-    -subj "/C=US/ST=California/CN=killgorealpha.com"
+    -subj "/C=US/ST=California/CN=gameserver.killgorealpha.com"
 
 # 3. Use CA's private key to sign web server's CSR and get back the signed certificate
 openssl x509 -req \
