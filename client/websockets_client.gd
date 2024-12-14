@@ -16,7 +16,7 @@ var tls_cert := X509Certificate.new()
 #var reconnect_timer = 0.0
 
 func _ready():
-	var hostname = "127.0.0.1"
+	var hostname = "149.28.223.185"
 	var port = 4443
 	var websocket_url = "wss://%s:%d" % [hostname, port]
 	
