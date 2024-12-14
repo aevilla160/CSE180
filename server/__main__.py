@@ -72,7 +72,9 @@ if __name__ == '__main__':
     # )
 
     PORT: int = 4443
-    factory = GameFactory('0.0.0.0', PORT)
+    HOSTNAME = 'gameserver.killgorealpha.com'
+    factory = GameFactory(HOSTNAME, PORT)
+    # factory = GameFactory('0.0.0.0', PORT)
     contextFactory = ssl.DefaultOpenSSLContextFactory(certs_dir + "ca-key.key", certs_dir + "ca-cert.crt")
 
     logger.info(f"Server listening on port {PORT}")
