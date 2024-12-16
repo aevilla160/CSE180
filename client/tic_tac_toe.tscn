@@ -1,0 +1,150 @@
+[gd_scene load_steps=3 format=3 uid="uid://opy2jgq5sev3"]
+
+[ext_resource type="Script" path="res://TacTacToe.gd" id="1_qk28y"]
+
+[sub_resource type="SystemFont" id="SystemFont_dtdeo"]
+
+[node name="TicTacToe" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qk28y")
+
+[node name="ScoreContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftSpace" type="Control" parent="ScoreContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="XWinsLabel" type="Label" parent="ScoreContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_dtdeo")
+theme_override_font_sizes/font_size = 48
+text = "X Wins: 0"
+vertical_alignment = 1
+
+[node name="Spacer" type="Control" parent="ScoreContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OWinsLabel" type="Label" parent="ScoreContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "O Wins: 0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="RightSpace" type="Control" parent="ScoreContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="BoardBackground" type="Panel" parent="."]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = -17.0
+offset_bottom = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BoardGrid" type="GridContainer" parent="."]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -150.0
+offset_right = 150.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 3
+
+[node name="GameOverPanel" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameOverLabel" type="Label" parent="GameOverPanel"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ContinueButton" type="Button" parent="GameOverPanel"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+action_mode = 0
+text = "Continue"
+
+[node name="MatchOverPanel" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MatchOverLabel" type="Label" parent="MatchOverPanel"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RematchButton" type="Button" parent="MatchOverPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -38.5
+offset_top = -15.5
+offset_right = 38.5
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Rematch"
+
+[connection signal="pressed" from="GameOverPanel/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="MatchOverPanel/RematchButton" to="." method="_on_rematch_button_pressed"]
