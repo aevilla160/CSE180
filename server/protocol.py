@@ -103,7 +103,43 @@ class GameServerProtocol(WebSocketServerProtocol):
                 self._known_others.add(sender)
                 
         elif p.action == packet.Action.Target:
-            self._player_target = p.payloads
+           # self._player_target = p.payloads
+             #TICTACTOE---------------------------------------
+            if not self._in_game:
+                self._player_target = p.payloads
+
+
+        elif p.action == packet.Action.TicTacToeStart:
+            player1_id, player2_id = p.payloads
+            self._in_game = True
+
+
+        elif p.action == packet.Action.TicTacToeSpotEnter:
+            spot_number = p.payloads[0]
+            self._in_tic_tac_toe_spot = spot_number
+
+            other_spot = 2 if spot_number == 1 else 1
+            other_player = None
+            for protocol in self.factory.players:
+                if protocol._in_tic_tac_toe_spot == other_spot:
+                    other_player = protocol
+                    break
+
+            if other_player:
+                # Send start packet to both players
+                start_packet = packet.TicTacToeStartPacket(
+                    self._actor.id,  # player1
+                    other_player._actor.id  # player2
+                )
+                self.send_client(start_packet)
+                other_player.send_client(start_packet)
+
+        elif p.action == packet.Action.TicTacToemove:
+            if self._in_game and self._tic_tac_toe_opponent:
+                row, col = p.payloads[0], p.payloads[1]
+                #Forward move to opponent
+                self._tic_tac_toe_opponent.send_client(p)
+        #TICTACTOE---------------------------------------
 
         elif p.action == packet.Action.Disconnect:
             self._known_others.remove(sender)
