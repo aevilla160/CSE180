@@ -4,6 +4,8 @@ extends Node
 const NetworkClient = preload("res://websockets_client.gd")
 const Packet = preload("res://packet.gd")
 const Chatbox = preload("res://Chatbox.tscn")
+const TicTacToe = preload("res://tic_tac_toe.tscn")
+const Spot = preload("res://TicTacToeSpot.tscn")
 const ui = preload("res://UI.tscn")
 const Actor = preload("res://Actor.tscn")
 
@@ -68,14 +70,14 @@ func PLAY(p):
 			var player2_id = p.payloads[1]
 			_start_tic_tac_toe(player1_id,player2_id)
 		"TicTacToeMove":
-			var row = payloads[0]
+			var row = p.payloads[0]
 			var col = p.payloads[1]
 			if _tic_tac_toe:
 				_tic_tac_toe.handle_network_move(row,col)
 
 func _start_tic_tac_toe(player1_id: int, player2_id: int):
 	if not _tic_tac_toe:
-		_tic_tac_toe = preload("res://TicTacToe.tscn).instantiate()
+		_tic_tac_toe = TicTacToe.instantiate()
 		add_child(_tic_tac_toe)
 		_tic_tac_toe.game_start(player1_id, player2_id)
 #TICTACTOE---------------------
