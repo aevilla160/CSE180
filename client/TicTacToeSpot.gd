@@ -1,13 +1,19 @@
-# TicTacToeSpot.gd
 extends Area2D
 
-@export var spot_number: int  # Set to 1 or 2 in editor
+const Packet = preload("res://packet.gd")
+
+
+@export var spot_number: int = 0
+var _network_client = null
+
+func set_network_client(client):
+	_network_client = client
+	# Now that we have a valid network client reference, we can safely send the packet
+	var p = Packet.new("TicTacToeSpotEnter", [spot_number])
+	_network_client.send_packet(p)
 
 func _ready():
-	connect("body_entered", Callable(self, "_on_body_entered"))
+	# Note: We are NOT sending the packet here anymore.
+	# We wait until `set_network_client()` is called to send it.
+	pass
 
-func _on_body_entered(body):
-	if body.get_parent().is_player:
-		var network_client = get_node("/root/Main/_network_client")
-		var p = TicTacToeSpotEnterPacket.new(spot_number)
-		network_client.send_packet(p)
