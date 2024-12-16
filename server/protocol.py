@@ -18,6 +18,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         self._last_delta_time_checked = None
         self._known_others: set['GameServerProtocol'] = set()
 
+
     def LOGIN(self, sender: 'GameServerProtocol', p: packet.Packet):
         if not isinstance(p, (packet.LoginPacket, packet.RegisterPacket)):
             self.send_client(packet.DenyPacket("Invalid packet type for login state"))
@@ -88,56 +89,28 @@ class GameServerProtocol(WebSocketServerProtocol):
             player.save()
             self.send_client(packet.OkPacket())
 
+
     def PLAY(self, sender: 'GameServerProtocol', p: packet.Packet):
         if p.action == packet.Action.Chat:
             if sender == self:
                 self.broadcast(p, exclude_self=True)
             else:
                 self.send_client(p)
-        
+
         elif p.action == packet.Action.ModelDelta:
             self.send_client(p)
             if sender not in self._known_others:
                 # Send our full model data to the new player
-                sender.onPacket(self, packet.ModelDeltaPacket(models.create_dict(self._actor)))
+                sender.onPacket(self, packet.ModelDeltaPacket(models.create_dict(self._character)))
                 self._known_others.add(sender)
-                
+
         elif p.action == packet.Action.Target:
-           self._player_target = p.payloads
-
-        # elif p.action == packet.Action.TicTacToeStart:
-        #     player1_id, player2_id = p.payloads
-
-        # elif p.action == packet.Action.TicTacToeSpotEnter:
-        #     spot_number = p.payloads[0]
-        #     self._in_tic_tac_toe_spot = spot_number
-
-        #     other_spot = 2 if spot_number == 1 else 1
-        #     other_player = None
-        #     for protocol in self.factory.players:
-        #         if protocol._in_tic_tac_toe_spot == other_spot:
-        #             other_player = protocol
-        #             break
-
-        #     if other_player:
-        #         # Send start packet to both players
-        #         start_packet = packet.TicTacToeStartPacket(
-        #             self._actor.id,  # player1
-        #             other_player._actor.id  # player2
-        #         )
-        #         self.send_client(start_packet)
-        #         other_player.send_client(start_packet)
-
-        # elif p.action == packet.Action.TicTacToemove:
-        #     if self._in_game and self._tic_tac_toe_opponent:
-        #         row, col = p.payloads[0], p.payloads[1]
-        #         #Forward move to opponent
-        #         self._tic_tac_toe_opponent.send_client(p)
-        # #TICTACTOE---------------------------------------
+            self._player_target = p.payloads
 
         elif p.action == packet.Action.Disconnect:
             self._known_others.remove(sender)
             self.send_client(p)
+
 
     def _update_position(self) -> bool:
         "Attempt to update the actor's position and return true only if the position was changed"
@@ -166,6 +139,7 @@ class GameServerProtocol(WebSocketServerProtocol):
 
         return True
 
+
     def tick(self):
         # Process the next packet in the queue
         if not self._packet_queue.empty():
@@ -187,15 +161,15 @@ class GameServerProtocol(WebSocketServerProtocol):
                 continue
             other.onPacket(self, p)
 
-    # Override
+
     def onConnect(self, request):
         print(f"Client connecting: {request.peer}")
 
-    # Override
+
     def onOpen(self):
         print(f"Websocket connection open.")
 
-    # Override
+
     def onClose(self, wasClean, code, reason):
         if self._actor:
             self._actor.save()
@@ -203,7 +177,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         self.factory.remove_protocol(self)
         print(f"Websocket connection closed{' unexpectedly' if not wasClean else ' cleanly'} with code {code}: {reason}")
 
-    # Override
+
     def onMessage(self, payload, isBinary):
         decoded_payload = payload.decode('utf-8')
 
@@ -216,9 +190,11 @@ class GameServerProtocol(WebSocketServerProtocol):
 
         self.onPacket(self, p)
 
+
     def onPacket(self, sender: 'GameServerProtocol', p: packet.Packet):
         self._packet_queue.put((sender, p))
         print(f"Queued packet: {p}")
+
 
     def send_client(self, p: packet.Packet):
         b = bytes(p)
