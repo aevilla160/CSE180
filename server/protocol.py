@@ -109,6 +109,20 @@ class GameServerProtocol(WebSocketServerProtocol):
             self._known_others.remove(sender)
             self.send_client(p)
 
+        # To hanldle other packet types, add more elif branches here
+        elif p.action == packet.Action.GameStart:
+            # Start new game between two players
+            opponent_name = p.payloads[0]
+            self.broadcast(p)
+            
+        elif p.action == packet.Action.GameChoice:
+            player_name, choice = p.payloads
+            # Store the choice and check if both players have made choices
+            if self._check_both_choices_made():
+                # Determine winner and broadcast result
+                winner, p1_choice, p2_choice = self._determine_game_result()
+                self.broadcast(packet.GameResultPacket(winner, p1_choice, p2_choice))
+
     def _update_position(self) -> bool:
         "Attempt to update the actor's position and return true only if the position was changed"
         if not self._player_target:
@@ -196,3 +210,25 @@ class GameServerProtocol(WebSocketServerProtocol):
             self.sendMessage(b)
         except Disconnected:
             print(f"Couldn't send {p} because client disconnected.")
+
+
+# for rock paper scissors game
+    def _check_both_choices_made(self) -> bool:
+        for player in self.factory.players:
+            if not player._player_choice:
+                return False
+        return True
+    
+
+    def _determine_game_result(self) -> tuple[str, str, str]:
+        p1_choice = self.factory.players[0]._player_choice
+        p2_choice = self.factory.players[1]._player_choice
+        if p1_choice == p2_choice:
+            return "Draw", p1_choice, p2_choice
+        if p1_choice == "Rock":
+            return "Player 1" if p2_choice == "Scissors" else "Player 2", p1_choice, p2_choice
+        if p1_choice == "Paper":
+            return "Player 1" if p2_choice == "Rock" else "Player 2", p1_choice, p2_choice
+        if p1_choice == "Scissors":
+            return "Player 1" if p2_choice == "Paper" else "Player 2", p1_choice, p2_choice
+        return "Draw", p1_choice, p2_choice

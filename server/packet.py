@@ -11,6 +11,10 @@ class Action(enum.Enum):
     Chat = enum.auto()
     ModelDelta = enum.auto()
     Target = enum.auto()
+    # Add to Action enum:
+    GameStart = enum.auto()
+    GameChoice = enum.auto()
+    GameResult = enum.auto()
 
 
 class Packet:
@@ -85,3 +89,17 @@ def from_json(json_str: str) -> Packet:
     except TypeError:
         print(
             f"{class_name} can't handle arguments {tuple(payloads)}.")
+
+
+# Add new packet classes:
+class GameStartPacket(Packet):
+    def __init__(self, opponent_name: str):
+        super().__init__(Action.GameStart, opponent_name)
+
+class GameChoicePacket(Packet):
+    def __init__(self, player_name: str, choice: str):
+        super().__init__(Action.GameChoice, player_name, choice)
+
+class GameResultPacket(Packet):
+    def __init__(self, winner: str, p1_choice: str, p2_choice: str):
+        super().__init__(Action.GameResult, winner, p1_choice, p2_choice)
