@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://TacTacToe.gd" id="1_qk28y"]
 
 [sub_resource type="SystemFont" id="SystemFont_dtdeo"]
+subpixel_positioning = 0
 
 [node name="TicTacToe" type="Control"]
 layout_mode = 3

@@ -20,6 +20,10 @@ def create_dict(model: models.Model) -> dict:
         d["instanced_entity"] = create_dict(model.instanced_entity)
         # Purposefully don't include user information here.
 #TICTACTOE -----------------------------
+    elif model_type == TicTacToeGame:
+        d["instanced_entity"] = create_dict(model.instanced_entity)
+        if model.is_active:
+            d["is_active"] = create_dict(model.is_active)
     elif model_type == TicTacToeSpot:
         d["instanced_entity"] = create_dict(model.instanced_entity)
         if model.occupied_by:
@@ -68,4 +72,15 @@ class TicTacToeSpot(models.Model):
     instanced_entity = models.OneToOneField(InstancedEntity, on_delete=models.CASCADE)
     is_occupied = models.BooleanField(default=False)
     occupied_by = models.ForeignKey(Actor, null=True, blank=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        db_table = 'spot'
+
+class TicTacToeGame(models.Model):
+    game_number = models.IntegerField()
+    instanced_entity = models.OneToOneField(InstancedEntity, on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'game'
 #TICTACTOE -----------------------------

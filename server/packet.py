@@ -16,6 +16,7 @@ class Action(enum.Enum):
     TicTacToeSpotEnter = enum.auto()
     TicTacToeSpotLeave = enum.auto()
     TicTacToeStart = enum.auto()
+    TicTacToeFinish = enum.auto()
     TicTacToeMove = enum.auto()
     #TICTACTOE---------------------------------------
 
@@ -79,6 +80,10 @@ class TicTacToeStartPacket(Packet):
 class TicTacToeMovePacket(Packet):
     def __init__(self, row: int, col: int):
         super().__init__(Action.TicTacToeMove, row, col)
+
+class TicTacToeFinishPacket(Packet):
+    def __init__(self, player1_id: int, player2_id: int):
+        super().__init__(Action.TicTacToeFinish, player1_id, player2_id)
 #TICTACTOE---------------------------------------
 
 

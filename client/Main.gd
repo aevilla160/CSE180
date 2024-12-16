@@ -80,6 +80,9 @@ func _start_tic_tac_toe(player1_id: int, player2_id: int):
 		_tic_tac_toe = TicTacToe.instantiate()
 		add_child(_tic_tac_toe)
 		_tic_tac_toe.game_start(player1_id, player2_id)
+
+func _finish_tic_tac_toe(player1_id: int, player2_id: int):
+		remove_child(_tic_tac_toe)
 #TICTACTOE---------------------
 
 

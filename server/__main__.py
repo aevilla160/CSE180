@@ -17,31 +17,26 @@ class GameFactory(WebSocketServerFactory):
     def __init__(self, hostname: str, port: int):
         self.protocol = protocol.GameServerProtocol
         super().__init__(f"wss://{hostname}:{port}")
-        # super().__init__(f"ws://{hostname}:{port}")
-
-        self.setProtocolOptions(openHandshakeTimeout=30)
-        self.setProtocolOptions(autoPingInterval=30)
-        self.setProtocolOptions(autoPingTimeout=5)
-        self.setProtocolOptions(allowedOrigins=["*"])
 
         self.players: set[protocol.GameServerProtocol] = set()
-        self.tickrate: int = 20
+        self.tickrate: int = 30
         self.user_ids_logged_in: set[int] = set()
 
         tickloop = task.LoopingCall(self.tick)
         tickloop.start(1 / self.tickrate)
 
+
     def tick(self):
         for p in self.players:
             p.tick()
+
 
     def remove_protocol(self, p: protocol.GameServerProtocol):
         self.players.remove(p)
         if p._actor and p._actor.user.id in self.user_ids_logged_in:
             self.user_ids_logged_in.remove(p._actor.user.id)
-        
+ 
 
-    # Override
     def buildProtocol(self, addr):
         p = super().buildProtocol(addr)
         self.players.add(p)
