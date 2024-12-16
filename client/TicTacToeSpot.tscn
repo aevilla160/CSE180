@@ -1,10 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://cawvhu6lvmutb"]
+[gd_scene load_steps=4 format=3 uid="uid://cawvhu6lvmutb"]
+
+[ext_resource type="Script" path="res://TicTacToeSpot.gd" id="1_llgqb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uxuoe"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_0tf5l"]
 
 [node name="Area2D" type="Area2D"]
+script = ExtResource("1_llgqb")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(3, 3)

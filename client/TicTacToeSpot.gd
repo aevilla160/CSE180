@@ -3,7 +3,7 @@ extends Area2D
 const Packet = preload("res://packet.gd")
 
 
-@export var spot_number: int = 0
+@export var spot_number: int
 var _network_client = null
 
 func set_network_client(client):
@@ -16,4 +16,3 @@ func _ready():
 	# Note: We are NOT sending the packet here anymore.
 	# We wait until `set_network_client()` is called to send it.
 	pass
-
