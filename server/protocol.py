@@ -18,6 +18,13 @@ class GameServerProtocol(WebSocketServerProtocol):
         self._last_delta_time_checked = None
         self._known_others: set['GameServerProtocol'] = set()
 
+<<<<<<< Updated upstream
+=======
+        # TICTACTOE ---------------------
+        self._in_tic_tac_toe_spot = None
+        self._in_game = False
+        self._tic_tac_toe_opponent = None
+>>>>>>> Stashed changes
 
     def LOGIN(self, sender: 'GameServerProtocol', p: packet.Packet):
         if not isinstance(p, (packet.LoginPacket, packet.RegisterPacket)):
@@ -165,7 +172,39 @@ class GameServerProtocol(WebSocketServerProtocol):
                 self._known_others.add(sender)
 
         elif p.action == packet.Action.Target:
-            self._player_target = p.payloads
+            if not self._in_game:
+                self._player_target = p.payloads # TICTACTOE
+
+        elif p.action == packet.Action.TicTacToeStart:
+            player1_id, player2_id = p.payloads
+            self._in_game = True
+
+
+        elif p.action == packet.Action.TicTacToeSpotEnter:
+            spot_number = p.payloads[0]
+            self._in_tic_tac_toe_spot = spot_number
+
+            other_spot = 2 if spot_number == 1 else 1
+            other_player = None
+            for protocol in self.factory.players:
+                if protocol._in_tic_tac_toe_spot == other_spot:
+                    other_player = protocol
+                    break
+
+            if other_player:
+                # Send start packet to both players
+                start_packet = packet.TicTacToeStartPacket(
+                    self._actor.id,  # player1
+                    other_player._actor.id  # player2
+                )
+                self.send_client(start_packet)
+                other_player.send_client(start_packet)
+
+        elif p.action == packet.Action.TicTacToemove:
+            if self._in_game and self._tic_tac_toe_opponent:
+                row, col = p.payloads[0], p.payloads[1]
+                #Forward move to opponent
+                self._tic_tac_toe_opponent.send_client(p)
 
         elif p.action == packet.Action.Disconnect:
             self._known_others.remove(sender)

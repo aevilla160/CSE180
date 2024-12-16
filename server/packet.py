@@ -11,6 +11,7 @@ class Action(enum.Enum):
     Chat = enum.auto()
     ModelDelta = enum.auto()
     Target = enum.auto()
+<<<<<<< Updated upstream
     Attack = enum.auto()
     Damage = enum.auto()
     Heal = enum.auto()
@@ -23,6 +24,14 @@ class Action(enum.Enum):
     GetItem = enum.auto()
     LoseItem = enum.auto()
     TalkFriendlyNPC = enum.auto()
+=======
+    #tictactoe actions
+    TicTacToeSpotEnter = enum.auto()
+    TicTacToeSpotLeave = enum.auto()
+    TicTacToeStart = enum.auto()
+    TicTacToeMove = enum.auto()
+
+>>>>>>> Stashed changes
 
 
 class Packet:
@@ -72,6 +81,7 @@ class TargetPacket(Packet):
     def __init__(self, t_x: float, t_y: float):
         super().__init__(Action.Target, t_x, t_y)
 
+<<<<<<< Updated upstream
 class AttackPacket(Packet):
     def __init__(self, actor_id: int, target_actor_id: int, damage: int):
         super().__init__(Action.Attack, actor_id, target_actor_id, damage)
@@ -116,6 +126,21 @@ class TalkFriendlyNPCPacket(Packet):
     def __init__(self, actor_id: int, target_actor_id: int):
         super().__init__(Action.TalkFriendlyNPC, actor_id, target_actor_id)
 
+=======
+# TicTacToe Packets
+class TicTacToeSpotEnterPacket(Packet):
+    def __init__(self, spot_number: int):
+        super().__init__(Action.TicTacToeSpotEnter, spot_number)
+
+class TicTacToeStartPacket(Packet):
+    def __init__(self, player1_id: int, player2_id: int):
+        super().__init__(Action.TicTacToeStart, player1_id, player2_id)
+
+class TicTacToeMovePacket(Packet):
+    def __init__(self, row: int, col: int):
+        super().__init__(Action.TicTacToeMove, row, col)
+#------------------------------------
+>>>>>>> Stashed changes
 
 def from_json(json_str: str) -> Packet:
     obj_dict = json.loads(json_str)
