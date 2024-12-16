@@ -136,6 +136,22 @@ func _enter_game():
 	add_child(_chatbox)
 	_ui = ui.instantiate()
 	add_child(_ui)
+#TICTACTOE-----------------------------------
+	var spot1 = Spot.instantiate()
+	spot1.spot_number = 1
+	add_child(spot1)
+	spot1.position = Vector2(100, 300)
+	spot1.set_network_client(_network_client)
+	
+	var spot2 = Spot.instantiate()
+	spot2.spot_number = 2
+	add_child(spot2)
+	spot2.position = Vector2(500, 300)
+	spot2.set_network_client(_network_client)
+# Now that the spot is in the scene tree and our network client is ready,
+# give the spot a reference to the client.
+	spot1.set_network_client(_network_client)
+	spot2.set_network_client(_network_client)
 
 
 func send_chat(text: String):
