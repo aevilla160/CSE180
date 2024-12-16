@@ -12,6 +12,13 @@ class Action(enum.Enum):
     ModelDelta = enum.auto()
     Target = enum.auto()
 
+    #TICTACTOE---------------------------------------
+    TicTacToeSpotEnter = enum.auto()
+    TicTacToeSpotLeave = enum.auto()
+    TicTacToeStart = enum.auto()
+    TicTacToeMove = enum.auto()
+    #TICTACTOE---------------------------------------
+
 
 class Packet:
     def __init__(self, action: Action, *payloads):
@@ -59,6 +66,20 @@ class ModelDeltaPacket(Packet):
 class TargetPacket(Packet):
     def __init__(self, t_x: float, t_y: float):
         super().__init__(Action.Target, t_x, t_y)
+
+#TICTACTOE---------------------------------------
+class TicTacToeSpotEnterPacket(Packet):
+    def __init__(self, spot_number: int):
+        super().__init__(Action.TicTacToeSpotEnter, spot_number)
+
+class TicTacToeStartPacket(Packet):
+    def __init__(self, player1_id: int, player2_id: int):
+        super().__init__(Action.TicTacToeStart, player1_id, player2_id)
+
+class TicTacToeMovePacket(Packet):
+    def __init__(self, row: int, col: int):
+        super().__init__(Action.TicTacToeMove, row, col)
+#TICTACTOE---------------------------------------
 
 
 def from_json(json_str: str) -> Packet:
