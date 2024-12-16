@@ -1,6 +1,8 @@
 extends Control
 
 const TicTacToeGame = preload("res://TicTacToeGame.gd")
+const Packet = preload("res://packet.gd")
+
 
 @onready var board_grid: GridContainer = $BoardGrid
 @onready var x_wins_label: Label = $ScoreContainer/XWinsLabel
@@ -65,7 +67,7 @@ func _on_cell_pressed(row: int, col: int):
 		#if game.make_move(row, col):
 			#_update_board_ui()
 		var network_client = get_node("/root/Main/_network_client")
-		var p = TicTacToeMovePacket.new(row, col)
+		var p = Packet.new("TicTacToeMove", [row, col])
 		network_client.send_packet(p)	
 
 func _on_move_made(row: int, col: int, player: int):
