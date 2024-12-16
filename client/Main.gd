@@ -20,7 +20,7 @@ var _player_actor = null
 var _ui = null
 
 #TICTACTOE---------------------
-var _tic_tac_toe = null
+var _tic_tac_toe: Dictionary = {}
 #TICTACTOE---------------------
 
 func _ready():
@@ -65,24 +65,24 @@ func PLAY(p):
 			remove_child(actor)
 			_actors.erase(actor_id)
 #TICTACTOE---------------------
-		"TicTacToeStart":
-			var player1_id = p.payloads[0]
-			var player2_id = p.payloads[1]
-			_start_tic_tac_toe(player1_id,player2_id)
-		"TicTacToeMove":
-			var row = p.payloads[0]
-			var col = p.payloads[1]
-			if _tic_tac_toe:
-				_tic_tac_toe.handle_network_move(row,col)
-
-func _start_tic_tac_toe(player1_id: int, player2_id: int):
-	if not _tic_tac_toe:
-		_tic_tac_toe = TicTacToe.instantiate()
-		add_child(_tic_tac_toe)
-		_tic_tac_toe.game_start(player1_id, player2_id)
-
-func _finish_tic_tac_toe(player1_id: int, player2_id: int):
-		remove_child(_tic_tac_toe)
+		#"TicTacToeStart":
+			#var player1_id = p.payloads[0]
+			#var player2_id = p.payloads[1]
+			#_start_tic_tac_toe(player1_id,player2_id)
+		#"TicTacToeMove":
+			#var row = p.payloads[0]
+			#var col = p.payloads[1]
+			#if _tic_tac_toe:
+				#_tic_tac_toe.handle_network_move(row,col)
+#
+#func _start_tic_tac_toe(player1_id: int, player2_id: int):
+	#if not _tic_tac_toe:
+		#_tic_tac_toe = TicTacToe.instantiate()
+		#add_child(_tic_tac_toe)
+		#_tic_tac_toe.game_start(player1_id, player2_id)
+#
+#func _finish_tic_tac_toe(player1_id: int, player2_id: int):
+		#remove_child(_tic_tac_toe)
 #TICTACTOE---------------------
 
 
