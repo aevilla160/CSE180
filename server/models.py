@@ -19,7 +19,12 @@ def create_dict(model: models.Model) -> dict:
     elif model_type == Actor:
         d["instanced_entity"] = create_dict(model.instanced_entity)
         # Purposefully don't include user information here.
-    
+#TICTACTOE -----------------------------
+    elif model_type == TicTacToeSpot:
+        d["instanced_entity"] = create_dict(model.instanced_entity)
+        if model.occupied_by:
+            d["occupied_by"] = create_dict(model.occupied_by)
+#TICTACTOE------------------------------
     return d
 
 def get_delta_dict(model_dict_before: dict, model_dict_after: dict) -> dict:
@@ -57,3 +62,10 @@ class Actor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     instanced_entity = models.OneToOneField(InstancedEntity, on_delete=models.CASCADE)
     avatar_id = models.IntegerField(default=0)
+#TICTACTOE -----------------------------
+class TicTacToeSpot(models.Model):
+    spot_number = models.IntegerField() # Either 1 or 2
+    instanced_entity = models.OneToOneField(InstancedEntity, on_delete=models.CASCADE)
+    is_occupied = models.BooleanField(default=False)
+    occupied_by = models.ForeignKey(Actor, null=True, blank=True, on_delete=models.SET_NULL)
+#TICTACTOE -----------------------------
