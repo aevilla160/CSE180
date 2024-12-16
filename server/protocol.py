@@ -101,7 +101,7 @@ class GameServerProtocol(WebSocketServerProtocol):
             self.send_client(p)
             if sender not in self._known_others:
                 # Send our full model data to the new player
-                sender.onPacket(self, packet.ModelDeltaPacket(models.create_dict(self._character)))
+                sender.onPacket(self, packet.ModelDeltaPacket(models.create_dict(self._actor)))
                 self._known_others.add(sender)
 
         elif p.action == packet.Action.Target:
