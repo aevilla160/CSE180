@@ -66,87 +66,6 @@ func PLAY(p):
 			var message: String = p.payloads[1]
 			_chatbox.add_message(username, message)
 		"Disconnect":
-<<<<<<< Updated upstream
-			var character_id: int = p.payloads[0]
-			if character_id in _characters:
-				var character = _characters[character_id]
-				_chatbox.add_message(null, character.character_name + " has disconnected.")
-				remove_child(character)
-				_characters.erase(character_id)
-		"Attack":
-			var character_id: int = p.payloads[0]
-			var target_character_id: int = p.payloads[1]
-			var damage: int = p.payloads[2]
-			if character_id in _characters and target_character_id in _characters:
-				var attacker = _characters[character_id]
-				var target = _characters[target_character_id]
-				target.take_damage(damage)
-		"Heal":
-			var character_id: int = p.payloads[0]
-			var target_character_id: int = p.payloads[1]
-			var healing: int = p.payloads[2]
-			if character_id in _characters and target_character_id in _characters:
-				var healer = _characters[character_id]
-				var target = _characters[target_character_id]
-				target.receive_healing(healing)
-		"Die":
-			var character_id: int = p.payloads[0]
-			if character_id in _characters:
-				var character = _characters[character_id]
-				_chatbox.add_message(null, character.character_name + " has died.")
-				if character.is_player:
-					_ui.show_death_screen()
-		"CreateGuild":
-			var guild_data: Dictionary = p.payloads[0]
-			_update_guild(guild_data["id"], guild_data)
-		"JoinGuild":
-			var character_id: int = p.payloads[0]
-			var guild_id: int = p.payloads[1]
-			if character_id in _characters and guild_id in _guilds:
-				var character = _characters[character_id]
-				var guild_data = _guilds[guild_id]
-				character.update({"guild": guild_data})
-		"LeaveGuild":
-			var character_id: int = p.payloads[0]
-			if character_id in _characters:
-				var character = _characters[character_id]
-				character.update({"guild": null})
-		"GetQuest":
-			var character_id: int = p.payloads[0]
-			var quest_id: int = p.payloads[1]
-			if quest_id not in _quests:
-				_quests[quest_id] = {"active": true}
-			_ui.update_quests(_quests)
-		"CompleteQuest":
-			var character_id: int = p.payloads[0]
-			var quest_id: int = p.payloads[1]
-			if quest_id in _quests:
-				_quests[quest_id]["active"] = false
-				_quests[quest_id]["complete"] = true
-			_ui.update_quests(_quests)
-		"GetItem":
-			var character_id: int = p.payloads[0]
-			var item_id: int = p.payloads[1]
-			var quantity: int = p.payloads[2]
-			if item_id not in _items:
-				_items[item_id] = quantity
-			else:
-				_items[item_id] += quantity
-		"LoseItem":
-			var character_id: int = p.payloads[0]
-			var item_id: int = p.payloads[1]
-			var quantity: int = p.payloads[2]
-			if item_id in _items:
-				_items[item_id] = max(0, _items[item_id] - quantity)
-				if _items[item_id] == 0:
-					_items.erase(item_id)
-		"TalkFriendlyNPC":
-			var character_id: int = p.payloads[0]
-			var npc_id: int = p.payloads[1]
-			if npc_id in _npcs:
-				var npc = _npcs[npc_id]
-				_ui.show_npc_dialogue(npc)
-=======
 			var actor_id: int = p.payloads[0]
 			var actor = _actors[actor_id]
 			_chatbox.add_message(null, actor.actor_name + " has disconnected.")
@@ -168,7 +87,6 @@ func _start_tic_tac_toe(player1_id: int, player2_id: int):
 		_tic_tac_toe = preload("res://TicTacToe.tscn).instantiate
 		add_child(_tic_tac_toe)
 		_tic_tac_toe.game_start(player1_id, player2_id)
->>>>>>> Stashed changes
 
 
 func _handle_login_button(username: String, password: String):
