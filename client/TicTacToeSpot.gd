@@ -1,29 +1,34 @@
-de
+
 extends Area2D
 
 signal game_started
 const Packet = preload("res://packet.gd")
-const NetworkClient = preload("res://websockets_client.gd")
+#const NetworkClient = preload("res://websockets_client.gd")
 
+signal spot_occupied(spot_number) #NEW
+signal spot_vacated(spot_number) #NEW
+
+@onready var main = get_node("/root/Main")
 @export var spot_number: int
-@onready var _network_client = NetworkClient.new()
+@onready var _network_client = main._network_client
+
 var is_occupied = false
 var occupying_player = null
 
 func _ready():
 	# Set up the ColorRect
-	var visual = ColorRect.new()
-	visual.size = Vector2(64, 64)
-	visual.position = Vector2(-32, -32)  # Center it
-	visual.color = Color(0.5, 0, 0.5, 0.5)  # Purple, semi-transparent
-	add_child(visual)
-
-	# Set up collision
-	var collision = CollisionShape2D.new()
-	var shape = RectangleShape2D.new()
-	shape.size = Vector2(64, 64)
-	collision.shape = shape
-	add_child(collision)
+	#var visual = ColorRect.new()
+	#visual.size = Vector2(64, 64)
+	#visual.position = Vector2(-32, -32)  # Center it
+	#visual.color = Color(0.5, 0, 0.5, 0.5)  # Purple, semi-transparent
+	#add_child(visual)
+#
+	## Set up collision
+	#var collision = CollisionShape2D.new()
+	#var shape = RectangleShape2D.new()
+	#shape.size = Vector2(64, 64)
+	#collision.shape = shape
+	#add_child(collision)
 
 	connect("body_entered", Callable(self, "_on_body_entered"))
 	connect("body_exited", Callable(self, "_on_body_exited"))
@@ -34,13 +39,20 @@ func _on_body_entered(body):
 		var p = Packet.new("TicTacToeSpotEnter", [spot_number])
 		_network_client.send_packet(p)
 		is_occupied = true
+		print("Spot {spot_number} is occupied")
 		occupying_player = body
+		#NEW------------------
+		emit_signal("spot_occupied", spot_number)
+		#NEW------------------
 		update_appearance()
 
 func _on_body_exited(body):
 	if body == occupying_player:
 		is_occupied = false
 		occupying_player = null
+		#NEW------------------
+		emit_signal("spot_vacated", spot_number) 
+		#NEW------------------
 		update_appearance()
 
 func update_appearance():

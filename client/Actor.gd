@@ -89,4 +89,3 @@ func _on_area_entered(other_body):
 		var p = Packet.new("TicTacToeSpotEnter", [spot_number])	
 		network_client.send_packet(p)
 #TICTACTOE------- ADD COLLISION FOR SPOTS
-

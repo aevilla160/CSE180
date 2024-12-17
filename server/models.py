@@ -81,6 +81,10 @@ class TicTacToeGame(models.Model):
     instanced_entity = models.OneToOneField(InstancedEntity, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=False)
 
+    #NEW - FIELD TO TRACK SPOTS IN RANGE
+    spot1_in_range = models.ForeignKey(TicTacToeSpot, null=True, related_name='game_spot1', on_delete=models.SET_NULL)
+    spot2_in_range = models.ForeignKey(TicTacToeSpot, null=True, related_name='game_spot2', on_delete=models.SET_NULL)
+    #NEW - FIELD TO TRACK SPOTS IN RANGE
     class Meta:
         db_table = 'game'
 #TICTACTOE -----------------------------

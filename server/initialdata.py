@@ -22,12 +22,12 @@ spot1_entity = Entity.objects.create(name='tictactoe_spot_1')
 spot2_entity = Entity.objects.create(name='tictactoe_spot_2')
 
 
-# Create their instances with fixed positions
-game1_instance = InstancedEntity.objects.create(
-    x=0.0,
-    y=0.0,
-    entity=game_entity
-)
+# # Create their instances with fixed positions
+# game1_instance = InstancedEntity.objects.create(
+#     x=(spot1_1_instance.x + spot2_1_instance.x) / 2,
+#     y=(spot1_1_instance.y + spot2_1_instance.y) / 2,
+#     entity=game_entity
+# )
 
 spot1_1_instance = InstancedEntity.objects.create(
     x=100.0,
@@ -41,9 +41,19 @@ spot2_1_instance = InstancedEntity.objects.create(
     entity=spot2_entity
 )
 
+# Create their instances with fixed positions
+game1_instance = InstancedEntity.objects.create(
+    x=(spot1_1_instance.x + spot2_1_instance.x) / 2,
+    y=(spot1_1_instance.y + spot2_1_instance.y) / 2,
+    entity=game_entity
+)
+
 game1 = TicTacToeGame.objects.create(
     game_number=1,
     instanced_entity=game1_instance
+    #NEW
+    is_active=False
+    #NEW
 )
 
 # Create the TicTacToe spots

@@ -125,13 +125,27 @@ class GameServerProtocol(WebSocketServerProtocol):
                 spot.is_occupied = True
                 spot.occupied_by = self._actor
                 spot.save()
+
+                game = models.TicTacToeGame.objects.filter(is_active=False).first()
+                if game:
+                    if spot_number == 1:
+                        game.spot1_in_range = spot
+                else:
+                    game.spot2_in_range = spot
+                game.save()
+
+                if game.spot1_in_range and game.spot2_in_range:
+                    if game.spot1_in_range.is_occupied and game.spot2_in_range.is_occupied:
+                        game.is_active = True
+                        game.save()
+                        self._start_new_game()
                 
                 # Broadcast spot update
                 self.broadcast(packet.ModelDeltaPacket(models.create_dict(spot)))
                 
-                # Check if both spots are occupied
-                if models.TicTacToeSpot.objects.filter(is_occupied=True).count() == 2:
-                    self._start_new_game()
+                # # Check if both spots are occupied
+                # if models.TicTacToeSpot.objects.filter(is_occupied=True).count() == 2:
+                #     self._start_new_game()
                     
             except models.TicTacToeSpot.DoesNotExist:
                 print(f"Spot {spot_number} not found")
@@ -246,32 +260,15 @@ class GameServerProtocol(WebSocketServerProtocol):
         self._packet_queue.put((sender, p))
         print(f"Queued packet: {p}")
 
-    def _start_new_game(self):
-         # Get both occupied spots
-        spots = models.TicTacToeSpot.objects.filter(is_occupied=True)
-        player1 = spots[0].occupied_by
-        player2 = spots[1].occupied_by
+def _start_new_game(self, game):
+    spot1_player = game.spot1_in_range.occupied_by
+    spot2_player = game.spot2_in_range.occupied_by
 
-        
-        # Create new game instance
-        game_entity = models.Entity.objects.create(name='tictactoe_game')
-        game_instance = models.InstancedEntity.objects.create(
-            x=0.0, y=0.0, entity=game_entity
-        )
-        
-        game = models.TicTacToeGame.objects.create(
-            game_number=1,  # You might want to generate this
-            instanced_entity=game_instance,
-            is_active=True
-        )
-
-        self._current_turn = spots[0].occupied_by  # First player to enter gets first turn
-        self._game = game
-        
-        
-        
-        # Broadcast game start
-        self.broadcast(packet.ModelDeltaPacket(models.create_dict(game)))
+    self._current_turn = spot1_player  # First player to enter gets first turn
+    self._game = game
+    
+    # Broadcast game start
+    self.broadcast(packet.ModelDeltaPacket(models.create_dict(game)))
 
 
     def send_client(self, p: packet.Packet):

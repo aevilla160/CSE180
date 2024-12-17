@@ -22,6 +22,7 @@ var _ui = null
 #TICTACTOE---------------------
 var _tic_tac_toe = null
 var _spots: Dictionary = {}
+var _tables: Dictionary = {}
 #TICTACTOE---------------------
 
 func _ready():
@@ -146,23 +147,44 @@ func _update_tictactoespot(model_id: int, model_data: Dictionary):
 		spot.position = Vector2(
 		   model_data["instanced_entity"]["x"],
 		   model_data["instanced_entity"]["y"] )
+		
+		spot.connect("spot_occupied", Callable(self, "_on_spot_occupied"))
+		spot.connect("spot_occupied", Callable(self, "_on_spot_occupied"))
+		
 		_spots[model_id] = spot
 		add_child(spot)
 		
 			
 	
 
-func _update_tictactoegame(model_id: int, model_data: Dictionary):
-	if model_data.get("is_active"):
-		if not _tic_tac_toe:
-			#Get Player ID's from occupied spots
+func _update_tictactoegame(model_id: int, model_data: Dictionary):	
+	print("Game table data:", model_data)  # Debug print
+	# Create visual representation of game table
+	if model_id in _tables:
+		var table = _tables[model_id]
+		
+		if model_data.get("is_active"):
 			var player1_id = model_data.get("player1_id")
 			var player2_id = model_data.get("player2_id")
-			_start_tic_tac_toe(player1_id,player2_id)
-		#
-		else:
-			if _tic_tac_toe:
-				_finish_tic_tac_toe(model_data.get("player1_id"),model_data.get("player2_id"))
+			if not _tic_tac_toe:
+				_start_tic_tac_toe(player1_id, player2_id)
+			else:
+				if _tic_tac_toe:
+					_finish_tic_tac_toe(player1_id, player2_id)
+	else:	
+		var table = Area2D.new()	
+		var visual = ColorRect.new()
+		visual.size = Vector2(200, 200)
+		visual.position = Vector2(-100, -100)
+		visual.color = Color(0, 0.5, 0, 0.3)  # Green, semi-transparent	
+		table.add_child(visual)
+		
+		# Set position from model data
+		table.position = Vector2(	
+				model_data["instanced_entity"]["x"],	
+				model_data["instanced_entity"]["y"]		
+				)	
+		add_child(table)
 
 func _check_for_game_start():
 	var occupied_spots = 0
