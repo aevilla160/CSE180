@@ -6,12 +6,12 @@ var spots_in_range = {
 }
 
 func _ready():
-	# Make table visible with a different color than spots
-	var visual = ColorRect.new()
-	visual.size = Vector2(200, 200)  # Bigger than spots
-	visual.position = Vector2(300, 300)  # Center it
-	visual.color = Color(0, 0.5, 0, 0.3)  # Green with transparency
-	add_child(visual)
+	## Make table visible with a different color than spots
+	#var visual = ColorRect.new()
+	#visual.size = Vector2(200, 200)  # Bigger than spots
+	#visual.position = Vector2(300, 300)  # Center it
+	#visual.color = Color(0, 0.5, 0, 0.3)  # Green with transparency
+	#add_child(visual)
 
 	# Set up collision for spot detection
 	var collision = CollisionShape2D.new()

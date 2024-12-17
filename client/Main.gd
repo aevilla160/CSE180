@@ -6,6 +6,7 @@ const Packet = preload("res://packet.gd")
 const Chatbox = preload("res://Chatbox.tscn")
 const TicTacToe = preload("res://tic_tac_toe.tscn")
 const Spot = preload("res://TicTacToeSpot.tscn")
+const Table = preload("res://TicTacToeTable.tscn")
 const ui = preload("res://UI.tscn")
 const Actor = preload("res://Actor.tscn")
 
@@ -211,16 +212,19 @@ func _enter_game():
 	var spot1 = Spot.instantiate()
 	spot1.spot_number = 1
 	#add_child(spot1)
-	spot1.position = Vector2(100, 300)
+	spot1.position = Vector2(150, 300)
 	#spot1.set_network_client(_network_client)
-	
 	var spot2 = Spot.instantiate()
 	spot2.spot_number = 2
 	#add_child(spot2)
-	spot2.position = Vector2(500, 300)
+	spot2.position = Vector2(450, 300)
 	
 	add_child(spot1)
 	add_child(spot2)
+	
+	var table1 = Table.instantiate()
+	add_child(table1)
+	table1.position = Vector2(250,300)
 	
 
 
