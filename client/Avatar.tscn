@@ -100,7 +100,7 @@ texture = ExtResource("1")
 hframes = 4
 vframes = 3
 region_enabled = true
-region_rect = Rect2(368, 0, 64, 48)
+region_rect = Rect2(369, 1, 62, 48)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

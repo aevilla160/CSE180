@@ -25,7 +25,7 @@ func update(new_model: Dictionary):
 
 	# Set the correct sprite for the actor's avatar ID
 	if new_model.has("avatar_id"):
-		sprite.set_region_rect(Rect2(368, new_model["avatar_id"] * 48, 64, 48))
+		sprite.set_region_rect(Rect2(369, new_model["avatar_id"] * 48 + 0.5, 64, 48))
 
 	if new_model.has("instanced_entity"):
 		var ientity = new_model["instanced_entity"]
