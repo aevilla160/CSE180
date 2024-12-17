@@ -78,8 +78,8 @@ class TicTacToeStartPacket(Packet):
         super().__init__(Action.TicTacToeStart, player1_id, player2_id)
 
 class TicTacToeMovePacket(Packet):
-    def __init__(self, row: int, col: int):
-        super().__init__(Action.TicTacToeMove, row, col)
+    def __init__(self, row: int, col: int, player_id: int):
+        super().__init__(Action.TicTacToeMove, row, col, player_id)
 
 class TicTacToeFinishPacket(Packet):
     def __init__(self, player1_id: int, player2_id: int):

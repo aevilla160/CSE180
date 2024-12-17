@@ -17,6 +17,13 @@ class GameServerProtocol(WebSocketServerProtocol):
         self._player_target: list = None
         self._last_delta_time_checked = None
         self._known_others: set['GameServerProtocol'] = set()
+        #TICTACTOE------------------------------
+        self._in_tic_tac_toe_spot = None
+        self._in_game = False
+        self._tic_tac_toe_opponent = None
+        self._game = None  # Reference to current TicTacToeGame
+        self._current_turn = None
+        #TICTACTOE------------------------------
 
     def LOGIN(self, sender: 'GameServerProtocol', p: packet.Packet):
         if not isinstance(p, (packet.LoginPacket, packet.RegisterPacket)):
@@ -104,36 +111,55 @@ class GameServerProtocol(WebSocketServerProtocol):
                 
         elif p.action == packet.Action.Target:
            self._player_target = p.payloads
+    #TICTACTOE---------------------------------------
 
         elif p.action == packet.Action.TicTacToeStart:
             player1_id, player2_id = p.payloads
 
         elif p.action == packet.Action.TicTacToeSpotEnter:
             spot_number = p.payloads[0]
-            self._in_tic_tac_toe_spot = spot_number
+            
+            # Update spot in database
+            try:
+                spot = models.TicTacToeSpot.objects.get(spot_number=spot_number)
+                spot.is_occupied = True
+                spot.occupied_by = self._actor
+                spot.save()
+                
+                # Broadcast spot update
+                self.broadcast(packet.ModelDeltaPacket(models.create_dict(spot)))
+                
+                # Check if both spots are occupied
+                if models.TicTacToeSpot.objects.filter(is_occupied=True).count() == 2:
+                    self._start_new_game()
+                    
+            except models.TicTacToeSpot.DoesNotExist:
+                print(f"Spot {spot_number} not found")
 
-            other_spot = 2 if spot_number == 1 else 1
-            other_player = None
-            for protocol in self.factory.players:
-                if protocol._in_tic_tac_toe_spot == other_spot:
-                    other_player = protocol
-                    break
+        elif p.action == packet.Action.TicTacToeMove:
+            if self._in_game and self._game:
+                # Add turn validation
+                if self._actor.id != self._current_turn.id:
+                    self.send_client(packet.DenyPacket("Not your turn"))
+                    return
 
-            if other_player:
-                # Send start packet to both players
-                start_packet = packet.TicTacToeStartPacket(
-                    self._actor.id,  # player1
-                    other_player._actor.id  # player2
-                )
-                self.send_client(start_packet)
-                other_player.send_client(start_packet)
-
-        elif p.action == packet.Action.TicTacToemove:
-            if self._in_game and self._tic_tac_toe_opponent:
                 row, col = p.payloads[0], p.payloads[1]
-                #Forward move to opponent
-                self._tic_tac_toe_opponent.send_client(p)
-        # #TICTACTOE---------------------------------------
+                
+                # Update game state in database
+                game = models.TicTacToeGame.objects.get(id=self._game.id)
+                if game.is_active:
+                    # Forward move to opponent
+
+                    move_packet = packet.TicTacToeMovePacket(row, col, self._actor.id)
+                    if self._tic_tac_toe_opponent:
+                        self._tic_tac_toe_opponent.send_client(move_packet)
+                        
+                        # Switch turns after valid move
+                        self._current_turn = self._tic_tac_toe_opponent._actor
+                        
+                        # Broadcast updated game state
+                        self.broadcast(packet.ModelDeltaPacket(models.create_dict(game)))
+        #TICTACTOE---------------------------------------
 
         elif p.action == packet.Action.Disconnect:
             self._known_others.remove(sender)
@@ -219,6 +245,34 @@ class GameServerProtocol(WebSocketServerProtocol):
     def onPacket(self, sender: 'GameServerProtocol', p: packet.Packet):
         self._packet_queue.put((sender, p))
         print(f"Queued packet: {p}")
+
+    def _start_new_game(self):
+         # Get both occupied spots
+        spots = models.TicTacToeSpot.objects.filter(is_occupied=True)
+        player1 = spots[0].occupied_by
+        player2 = spots[1].occupied_by
+
+        
+        # Create new game instance
+        game_entity = models.Entity.objects.create(name='tictactoe_game')
+        game_instance = models.InstancedEntity.objects.create(
+            x=0.0, y=0.0, entity=game_entity
+        )
+        
+        game = models.TicTacToeGame.objects.create(
+            game_number=1,  # You might want to generate this
+            instanced_entity=game_instance,
+            is_active=True
+        )
+
+        self._current_turn = spots[0].occupied_by  # First player to enter gets first turn
+        self._game = game
+        
+        
+        
+        # Broadcast game start
+        self.broadcast(packet.ModelDeltaPacket(models.create_dict(game)))
+
 
     def send_client(self, p: packet.Packet):
         b = bytes(p)
