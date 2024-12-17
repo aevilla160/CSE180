@@ -5,15 +5,16 @@ from server.models import (
     InstancedEntity,
     Actor,
     TicTacToeGame,
-    TicTacToeSpot  # Add this
+    TicTacToeSpot
 )
 
 #cleaning
-
+print("Cleaning existing data...")
 TicTacToeGame.objects.all().delete()
 TicTacToeSpot.objects.all().delete()
 
 
+# Create TicTacToe game entity
 game_entity = Entity.objects.create(name='tictactoe_game')
 
 
@@ -56,3 +57,5 @@ spot2 = TicTacToeSpot.objects.create(
     spot_number=2,
     instanced_entity=spot2_1_instance
 )
+
+print("Setup complete!")
