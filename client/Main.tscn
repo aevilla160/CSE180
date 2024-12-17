@@ -61,6 +61,15 @@ texture = ExtResource("3")
 0:4/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_nnpnl"]
+terrain_set_0/mode = 0
+terrain_set_0/terrain_0/name = "Street"
+terrain_set_0/terrain_0/color = Color(0.223488, 0.214887, 0.224917, 1)
+terrain_set_0/terrain_1/name = "Grass"
+terrain_set_0/terrain_1/color = Color(0.36057, 0.712786, 0.172227, 1)
+terrain_set_0/terrain_2/name = "Sidewalk"
+terrain_set_0/terrain_2/color = Color(0.835627, 0.810089, 0.800625, 1)
+terrain_set_0/terrain_3/name = "Terrain 3"
+terrain_set_0/terrain_3/color = Color(0.375, 0.5, 0.25, 1)
 sources/0 = SubResource("TileSetAtlasSource_4vpkw")
 
 [node name="Main" type="Node2D"]
