@@ -21,6 +21,7 @@ var _ui = null
 
 #TICTACTOE---------------------
 var _tic_tac_toe = null
+var _spots: Dictionary = {}
 #TICTACTOE---------------------
 
 func _ready():
@@ -72,6 +73,7 @@ func PLAY(p):
 		"TicTacToeMove":
 			var row = p.payloads[0]
 			var col = p.payloads[1]
+			var player_id = p.payloads[2]  # Now handling the player_id
 			if _tic_tac_toe:
 				_tic_tac_toe.handle_network_move(row,col)
 
@@ -83,6 +85,8 @@ func _start_tic_tac_toe(player1_id: int, player2_id: int):
 
 func _finish_tic_tac_toe(player1_id: int, player2_id: int):
 		remove_child(_tic_tac_toe)
+		_tic_tac_toe.queue_free()
+		_tic_tac_toe = null
 #TICTACTOE---------------------
 
 
@@ -128,6 +132,46 @@ func _update_actor(model_id: int, model_data: Dictionary):
 		_actors[model_id] = new_actor
 		add_child(new_actor)
 
+func _update_tictactoespot(model_id: int, model_data: Dictionary):
+	# If this spot already exists, update it	
+	if model_id in _spots:
+		var spot = _spots[model_id]
+		spot.is_occupied = model_data.get("is_occupied", false)
+		if "occupied_by" in model_data:
+			spot.occupying_player = _actors.get(model_data["occupied_by"]["id"])
+			spot.update_appearance()
+	else:
+		var spot = Spot.instantiate()
+		spot.spot_number = model_data["spot_number"]
+		spot.position = Vector2(
+		   model_data["instanced_entity"]["x"],
+		   model_data["instanced_entity"]["y"] )
+		_spots[model_id] = spot
+		add_child(spot)
+		
+			
+	
+
+func _update_tictactoegame(model_id: int, model_data: Dictionary):
+	if model_data.get("is_active"):
+		if not _tic_tac_toe:
+			#Get Player ID's from occupied spots
+			var player1_id = model_data.get("player1_id")
+			var player2_id = model_data.get("player2_id")
+			_start_tic_tac_toe(player1_id,player2_id)
+		#
+		else:
+			if _tic_tac_toe:
+				_finish_tic_tac_toe(model_data.get("player1_id"),model_data.get("player2_id"))
+
+func _check_for_game_start():
+	var occupied_spots = 0
+	for spot in _spots.values():
+		if spot.is_occupied:
+			occupied_spots += 1
+		if occupied_spots == 2:
+			# Both spots occupied, ready to play
+			pass
 
 func _enter_game():
 	state = Callable(self, "PLAY")
@@ -144,19 +188,18 @@ func _enter_game():
 #TICTACTOE-----------------------------------
 	var spot1 = Spot.instantiate()
 	spot1.spot_number = 1
-	add_child(spot1)
+	#add_child(spot1)
 	spot1.position = Vector2(100, 300)
-	spot1.set_network_client(_network_client)
+	#spot1.set_network_client(_network_client)
 	
 	var spot2 = Spot.instantiate()
 	spot2.spot_number = 2
-	add_child(spot2)
+	#add_child(spot2)
 	spot2.position = Vector2(500, 300)
-	spot2.set_network_client(_network_client)
-# Now that the spot is in the scene tree and our network client is ready,
-# give the spot a reference to the client.
-	spot1.set_network_client(_network_client)
-	spot2.set_network_client(_network_client)
+	
+	add_child(spot1)
+	add_child(spot2)
+	
 
 
 func send_chat(text: String):

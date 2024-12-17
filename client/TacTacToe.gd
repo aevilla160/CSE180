@@ -88,10 +88,12 @@ func _update_board_ui():
 					symbol = "O"
 			cell_buttons[i][j].text = symbol
 
-func handle_network_move(row: int, col: int):
+func handle_network_move(row: int, col: int, player_id: int):
+	# Make the move
 	game.make_move(row,col)
 	_update_board_ui()
-	my_turn = true
+	 # Update whose turn it is based on the player who just moved
+	my_turn = my_id != player_id
 	
 func game_start(player1_id: int, player2_id: int):
 	my_id = get_node("root/Main")._actor.id

@@ -1,5 +1,7 @@
 extends "res://model.gd"
 
+const Packet = preload("res://packet.gd")
+
 @onready var body: CharacterBody2D = get_node("CharacterBody2D")
 @onready var label: Label = get_node("CharacterBody2D/Label")
 @onready var sprite: Sprite2D = get_node("CharacterBody2D/Avatar")
@@ -79,3 +81,12 @@ func _process(delta):
 		animation_player.play("walk_up")
 	else:
 		animation_player.play("walk_left")
+#TICTACTOE------- ADD COLLISION FOR SPOTS
+func _on_area_entered(other_body):
+	if other_body.is_in_group("tictactoe_spot"):	
+		var network_client = get_node("/root/Main/_network_client")	
+		var spot_number = other_body.spot_number	
+		var p = Packet.new("TicTacToeSpotEnter", [spot_number])	
+		network_client.send_packet(p)
+#TICTACTOE------- ADD COLLISION FOR SPOTS
+
