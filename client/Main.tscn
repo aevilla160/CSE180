@@ -1,10 +1,22 @@
-[gd_scene load_steps=22 format=4 uid="uid://cug7knj6wbtt5"]
+[gd_scene load_steps=27 format=4 uid="uid://cug7knj6wbtt5"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://f7vof0nt350g" path="res://Login.tscn" id="2"]
+[ext_resource type="AudioStream" uid="uid://cfuv71e8yjbgp" path="res://game/audio/ethereal-vistas-191254.mp3" id="2_s87sr"]
 [ext_resource type="Texture2D" uid="uid://btch3w3yq11gy" path="res://tilemap_packed.png" id="3"]
+[ext_resource type="AudioStream" uid="uid://sphjnck3ronr" path="res://game/audio/good-night-lofi-cozy-chill-music-160166.mp3" id="3_nhsei"]
 [ext_resource type="Texture2D" uid="uid://dosua575kki4s" path="res://game/textures/dungeon-tilemap.png" id="3_t42is"]
+[ext_resource type="AudioStream" uid="uid://da2ueanny4bs" path="res://game/audio/tvari-tokyo-cafe-159065.mp3" id="4_gc5du"]
 [ext_resource type="Texture2D" uid="uid://2pxxg72c8tla" path="res://game/textures/outdoors-tilemap.png" id="4_guubt"]
+[ext_resource type="AudioStream" uid="uid://dcj8rle2pyaua" path="res://game/audio/sapientdream, Slushii - Break My Heart [NCS Release].mp3" id="5_8dcjj"]
+
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_33hks"]
+shuffle = true
+stream_count = 4
+stream_0 = ExtResource("3_nhsei")
+stream_1 = ExtResource("2_s87sr")
+stream_2 = ExtResource("5_8dcjj")
+stream_3 = ExtResource("4_gc5du")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h30we"]
 texture = ExtResource("3")
@@ -1739,6 +1751,10 @@ sources/0 = SubResource("TileSetAtlasSource_shjkq")
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamPlaylist_33hks")
+autoplay = true
 
 [node name="TileMap" type="TileMap" parent="."]
 scale = Vector2(3, 3)
