@@ -10,8 +10,8 @@
 [sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_x2a5q"]
 shuffle = true
 stream_count = 4
-stream_0 = ExtResource("2_s87sr")
-stream_1 = ExtResource("3_nhsei")
+stream_0 = ExtResource("3_nhsei")
+stream_1 = ExtResource("2_s87sr")
 stream_2 = ExtResource("4_gc5du")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h30we"]
